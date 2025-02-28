@@ -9,25 +9,23 @@ public class ResourcesDisplayerToUi : MonoBehaviour
     [SerializeField] private ResourcesManager _resourceManager;
 
     [Header("")]
-    [SerializeField] private TextMeshProUGUI _energyText;
-    [SerializeField] private TextMeshProUGUI _robotsText;
-    [SerializeField] private TextMeshProUGUI _daysText;
-    [SerializeField] private TextMeshProUGUI _woodText;
-    [SerializeField] private TextMeshProUGUI _coalText;
+    [SerializeField] private ResourceCellOnUi _cellTotalCountOfRobots;
+    [SerializeField] private ResourceCellOnUi _cellCountOfAvailableRobots;
+    [SerializeField] private ResourceCellOnUi _cellWood;
+    [SerializeField] private ResourceCellOnUi _cellCoal;
 
     [Header("")]
     [SerializeField] private float _animationDuration = 1f;
 
     private void Start()
     {
-        AnimateValue(_resourceManager.Energy, _energyText, "Energy: ");
-        AnimateValue(_resourceManager.CountOfRobots, _robotsText, "Robots: ");
-        AnimateValue(_resourceManager.CountOfDays, _daysText, "Days: ");
-        AnimateValue(_resourceManager.Wood, _woodText, "Wood: ");
-        AnimateValue(_resourceManager.Coal, _coalText, "Coal: ");
+        AnimateValue(_resourceManager.TotalCountOfRobots, _cellTotalCountOfRobots);
+        AnimateValue(_resourceManager.CountOfAvailableRobots, _cellCountOfAvailableRobots);
+        AnimateValue(_resourceManager.Wood, _cellWood);
+        AnimateValue(_resourceManager.Coal, _cellCoal);
     }
 
-    private void AnimateValue(ReactiveProperty<int> property, TMP_Text text, string prefix)
+    private void AnimateValue(ReactiveProperty<int> property, ResourceCellOnUi cell)
     {
         int currentValue = property.Value;
         property.Subscribe(value =>
@@ -35,7 +33,7 @@ public class ResourcesDisplayerToUi : MonoBehaviour
             DOTween.To(() => currentValue, x => 
             {
                 currentValue = x;
-                text.text = $"{prefix}{currentValue}";
+                cell.TextMeshCount.text = currentValue.ToString();
             }, value, _animationDuration);
         }).AddTo(this);
     }
