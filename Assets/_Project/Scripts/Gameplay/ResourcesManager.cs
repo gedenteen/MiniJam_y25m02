@@ -10,9 +10,8 @@ public class ResourcesManager : MonoBehaviour
     public ReactiveProperty<int> Wood = new ReactiveProperty<int>(50);
     public ReactiveProperty<int> Coal = new ReactiveProperty<int>(30);
 
-    [Button]
-    public void ChangeCountOfEnergy()
+    public void ChangeCountOfEnergy(int summand)
     {
-        Energy.Value += 55;
+        Energy.Value += summand;
     }
 }
