@@ -157,7 +157,7 @@ MonoBehaviour:
   TotalCountOfRobots:
     value: 5
   CountOfAvailableRobots:
-    value: 5
+    value: 500
   CountOfDays:
     value: 1
   Wood:
