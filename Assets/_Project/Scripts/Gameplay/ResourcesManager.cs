@@ -21,6 +21,7 @@ public class ResourcesManager : MonoBehaviour
     public PropertiesOfExtractableResource PropertiesSilicon = new PropertiesOfExtractableResource();
 
     [Header("References to other objects")]
+    [SerializeField] private RobotsManager _robotsManager;
     [SerializeField] private ConfigInvestigations _configOfInvestigations;
 
     [SerializeField] private float _minTimeForInvestigate = 1f;
@@ -88,25 +89,17 @@ public class ResourcesManager : MonoBehaviour
         Debug.Log("ResourcesManager: SendRobotToInvestigate: Robot sent to investigate");
         
         // Дальше идёт асинхронная логика
-        float waitTime = UnityEngine.Random.Range(_minTimeForInvestigate, _maxTimeForInvestigate);
-        await UniTask.Delay(TimeSpan.FromSeconds(waitTime));
+        ExtractableResourceId resourceId = await _robotsManager.SendRobotToResourcesDeposit();
 
-        float chanceValue = UnityEngine.Random.Range(0f, 1f);
-        Debug.Log($"ResourcesManager: SendRobotToInvestigate: chanceValue={chanceValue}");
-
-        foreach (var pair in _dictChancesOfInvestigations)
+        if (resourceId == ExtractableResourceId.Undefined)
         {
-            ExtractableResourceId resourceId = pair.Key;
-            Vector2 chanceRange = pair.Value;
-
-            if (chanceValue >= chanceRange.x && chanceValue <= chanceRange.y)
-            {
-                Debug.Log($"ResourcesManager: SendRobotToInvestigate: found resource {resourceId}");
-                _dictExtractableResources[resourceId].DiscoveredDeposits.Value++;
-                _dictExtractableResources[resourceId].AvailableDeposits.Value++;
-                break;
-            }
+            Debug.Log("ResourcesManager: SendRobotToInvestigate: got " +
+                "ExtractableResourceId.Undefined");
+            return;
         }
+
+        _dictExtractableResources[resourceId].DiscoveredDeposits.Value++;
+        _dictExtractableResources[resourceId].AvailableDeposits.Value++;
 
         lock (_lock)
         {

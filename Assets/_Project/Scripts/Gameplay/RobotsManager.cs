@@ -24,15 +24,14 @@ public class RobotsManager : MonoBehaviour
         }
     }
 
-    [Button]
-    public void SendRobotToResource()
+    public async UniTask<ExtractableResourceId> SendRobotToResourcesDeposit()
     {
         Robot inactiveRobot = _listRobots.FirstOrDefault(r => !r.gameObject.activeSelf);
 
         if (inactiveRobot == null)
         {
             Debug.LogError("RobotsManager: Start: No inactive robots available!");
-            return;
+            return ExtractableResourceId.Undefined;
         }
 
         ResourcesDeposit nearestDeposit = FindNearestDeposit();
@@ -40,11 +39,12 @@ public class RobotsManager : MonoBehaviour
         if (nearestDeposit == null)
         {
             Debug.LogError("RobotsManager: Start: No valid resource deposits found!");
-            return;
+            return ExtractableResourceId.Undefined;
         }
 
         inactiveRobot.gameObject.SetActive(true);
-        MoveRobotAsync(inactiveRobot, nearestDeposit.transform.position).Forget();
+        await MoveRobotAsync(inactiveRobot, nearestDeposit);
+        return nearestDeposit.ResourceId;
     }
 
     private ResourcesDeposit FindNearestDeposit()
@@ -54,9 +54,9 @@ public class RobotsManager : MonoBehaviour
             .FirstOrDefault();
     }
 
-    private async UniTaskVoid MoveRobotAsync(Robot robot, Vector2 targetPosition)
+    private async UniTask MoveRobotAsync(Robot robot, ResourcesDeposit resourcesDeposit)
     {
-        await MoveToPosition(robot, targetPosition);
+        await MoveToPosition(robot, resourcesDeposit.transform.position);
         await UniTask.Delay(1000);
         await MoveToPosition(robot, transform.position);
         robot.gameObject.SetActive(false);
