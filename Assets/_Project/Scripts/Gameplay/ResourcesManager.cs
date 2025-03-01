@@ -31,8 +31,6 @@ public class ResourcesManager : MonoBehaviour
     private Dictionary<ExtractableResourceId, PropertiesOfExtractableResource> 
         _dictExtractableResources;
 
-    private readonly object _lock = new object();
-
     private void Awake()
     {
         FillDictChancesOfInvestigations();
@@ -77,15 +75,12 @@ public class ResourcesManager : MonoBehaviour
     [Button]
     public async UniTask SendRobotToInvestigate()
     {
-        lock (_lock)
+        if (CountOfAvailableRobots.Value <= 0)
         {
-            if (CountOfAvailableRobots.Value <= 0)
-            {
-                Debug.Log("ResourcesManager: SendRobotToInvestigate: No available robots to send");
-                return;
-            }
-            CountOfAvailableRobots.Value--;
+            Debug.Log("ResourcesManager: SendRobotToInvestigate: No available robots to send");
+            return;
         }
+        CountOfAvailableRobots.Value--;
         Debug.Log("ResourcesManager: SendRobotToInvestigate: Robot sent to investigate");
         
         // Дальше идёт асинхронная логика
@@ -102,10 +97,7 @@ public class ResourcesManager : MonoBehaviour
             _dictExtractableResources[resourceId].AvailableDeposits.Value++;
         }
 
-        lock (_lock)
-        {
-            CountOfAvailableRobots.Value++;
-        }
+        CountOfAvailableRobots.Value++;
         Debug.Log("ResourcesManager: SendRobotToInvestigate: Robot returned from investigation");
     }
 
@@ -118,45 +110,23 @@ public class ResourcesManager : MonoBehaviour
             return;
         }
 
-        lock (_lock)
+        if (CountOfAvailableRobots.Value <= 0)
         {
-            if (CountOfAvailableRobots.Value <= 0)
-            {
-                Debug.Log("ResourcesManager: ExtractResource: No available robots to send");
-                return;
-            }
-            CountOfAvailableRobots.Value--;
+            Debug.Log("ResourcesManager: ExtractResource: No available robots to send");
+            return;
         }
+        CountOfAvailableRobots.Value--;
 
         int countOfResources = await _robotsManager.ExtractResource(resourceId);
 
         _dictExtractableResources[resourceId].ExtractedResources.Value += countOfResources;
         _dictExtractableResources[resourceId].AvailableResources.Value += countOfResources;
 
-        
-        lock (_lock)
-        {
-            CountOfAvailableRobots.Value++;
-        }
+        CountOfAvailableRobots.Value++;
     }
 
     public void DecreaseCountOfAvailableDeposits(ExtractableResourceId resourceId)
     {
         _dictExtractableResources[resourceId].AvailableDeposits.Value--;
     }
-
-    // public void ChangeCountOfEnergy(int summand)
-    // {
-    //     Energy.Value += summand;
-    // }
-
-    // public void ChangeCountOfCoal(int summand)
-    // {
-    //     if (summand > 0)
-    //     {
-    //         PropertiesCoal.ExtractedResources.Value += summand;
-    //     }
-
-    //     PropertiesCoal.AvailableResources.Value += summand;
-    // }
 }

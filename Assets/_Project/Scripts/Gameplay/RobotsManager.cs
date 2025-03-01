@@ -95,7 +95,7 @@ public class RobotsManager : MonoBehaviour
 
     private async UniTask MoveToPosition(Robot robot, Vector2 targetPosition)
     {
-        while ((Vector2)robot.transform.position != targetPosition)
+        while (Vector2.Distance(robot.transform.position, targetPosition) > 0.01f)
         {
             robot.transform.position = Vector2.MoveTowards(
                 robot.transform.position, targetPosition, _robotSpeed * Time.deltaTime

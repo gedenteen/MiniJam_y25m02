@@ -8,9 +8,9 @@ using UniRx;
 public class ActionsManager : MonoBehaviour
 {
     [Header("References to my buttons")]
-    [SerializeField] private ExtendedButton _buttonSendRobotToInvestigate;
-    [SerializeField] private ExtendedButton _buttonGatherWood;
-    [SerializeField] private ExtendedButton _buttonGatherCoal;
+    [SerializeField] private ActionButton _buttonSendRobotToInvestigate;
+    [SerializeField] private ActionButton _buttonGatherWood;
+    [SerializeField] private ActionButton _buttonGatherCoal;
 
     [Header("References to other objects")]
     [SerializeField] private ResourcesManager _resourcesManager;
@@ -53,13 +53,13 @@ public class ActionsManager : MonoBehaviour
     }
 
     private void SubscribeToAvailableDeposits(ReactiveProperty<int> depositProperty, 
-        ExtendedButton button)
+        ActionButton button)
     {
         int currentValue = depositProperty.Value;
 
         if (currentValue == 0)
         {
-            button.gameObject.SetActive(false);
+            button.ActivateCanvasGroup(false);
         }
 
         _resourcesManager.CountOfAvailableRobots.Subscribe(newValue =>
@@ -78,10 +78,11 @@ public class ActionsManager : MonoBehaviour
 
         depositProperty.Subscribe(newValue =>
         {
-            // Объект сейчас деактивирован и новое значение больше 0?
-            if (!button.gameObject.activeSelf && newValue > 0) 
+            // Кнопка сейчас скрыта и новое значение больше 0?
+            if (!button.CanvasGroup.interactable && newValue > 0) 
             {
-                button.gameObject.SetActive(true);
+                // Показываем кнопку
+                button.ActivateCanvasGroup(true);
             }
             if (button.gameObject.activeSelf)
             {
