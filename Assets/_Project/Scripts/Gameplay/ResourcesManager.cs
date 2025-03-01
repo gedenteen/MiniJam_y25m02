@@ -98,7 +98,7 @@ public class ResourcesManager : MonoBehaviour
         {
             ExtractableResourceId resourceId = pair.Key;
             Vector2 chanceRange = pair.Value;
-            
+
             if (chanceValue >= chanceRange.x && chanceValue <= chanceRange.y)
             {
                 Debug.Log($"ResourcesManager: SendRobotToInvestigate: found resource {resourceId}");
@@ -107,30 +107,7 @@ public class ResourcesManager : MonoBehaviour
                 break;
             }
         }
-
-        // if (chanceValue >= _configOfInvestigations.ChanceForForest.x 
-        //     &&
-        //     chanceValue <= _configOfInvestigations.ChanceForForest.y)
-        // {
-            
-        //     PropertiesWood.DiscoveredDeposits.Value++;
-        //     PropertiesWood.AvailableDeposits.Value++;
-        // }
-        // else if (chanceValue >= _configOfInvestigations.ChanceForCoal.x 
-        //          &&
-        //          chanceValue <= _configOfInvestigations.ChanceForCoal.y)
-        // {
-        //     PropertiesCoal.DiscoveredDeposits.Value++;
-        //     PropertiesCoal.AvailableDeposits.Value++;
-        // }
-        // else if (chanceValue >= _configOfInvestigations.ChanceForSilicon.x 
-        //          &&
-        //          chanceValue <= _configOfInvestigations.ChanceForSilicon.y)
-        // {
-        //     PropertiesSilicon.DiscoveredDeposits.Value++;
-        //     PropertiesSilicon.AvailableDeposits.Value++;
-        // }
-
+        
         lock (_lock)
         {
             CountOfAvailableRobots.Value++;

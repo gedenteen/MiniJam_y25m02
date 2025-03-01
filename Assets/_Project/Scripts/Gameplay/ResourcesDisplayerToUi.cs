@@ -32,13 +32,37 @@ public class ResourcesDisplayerToUi : MonoBehaviour
     private void AnimateValue(ReactiveProperty<int> property, ResourceCellOnUi cell)
     {
         int currentValue = property.Value;
-        property.Subscribe(value =>
+
+        if (currentValue == 0)
         {
-            DOTween.To(() => currentValue, x => 
+            cell.gameObject.SetActive(false);
+        }
+
+        property.Subscribe(newValue =>
+        {
+            // Объект сейчас деактивирован?
+            if (!cell.gameObject.activeSelf) 
             {
-                currentValue = x;
-                cell.TextMeshCount.text = currentValue.ToString();
-            }, value, _animationDuration);
+                if (newValue == 0)
+                {
+                    // Ничего не делаем (сейчас объект деактивирован И значение = 0)
+                    return;
+                }
+                
+                // Активируем его и сразу показываем значение
+                cell.TextMeshCount.text = newValue.ToString();
+                currentValue = newValue;
+                cell.gameObject.SetActive(true);
+            }
+            else
+            {
+                // Нет, делаем анимацию для увеличения числа
+                DOTween.To(() => currentValue, x => 
+                {
+                    currentValue = x;
+                    cell.TextMeshCount.text = currentValue.ToString();
+                }, newValue, _animationDuration);
+            }
         }).AddTo(this);
     }
 }
