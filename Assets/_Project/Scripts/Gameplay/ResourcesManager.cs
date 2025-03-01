@@ -117,10 +117,26 @@ public class ResourcesManager : MonoBehaviour
             return;
         }
 
+        lock (_lock)
+        {
+            if (CountOfAvailableRobots.Value <= 0)
+            {
+                Debug.Log("ResourcesManager: ExtractResource: No available robots to send");
+                return;
+            }
+            CountOfAvailableRobots.Value--;
+        }
+
         int countOfResources = await _robotsManager.ExtractResource(resourceId);
 
         _dictExtractableResources[resourceId].ExtractedResources.Value += countOfResources;
         _dictExtractableResources[resourceId].AvailableResources.Value += countOfResources;
+
+        
+        lock (_lock)
+        {
+            CountOfAvailableRobots.Value++;
+        }
     }
 
     public void DecreaseCountOfAvailableDeposits(ExtractableResourceId resourceId)

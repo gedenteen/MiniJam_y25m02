@@ -18,6 +18,8 @@ public class ResourcesDeposit : MonoBehaviour
     [Header("References to asssets")]
     [SerializeField] private Sprite _spriteAfterExtraction;
 
+    int _currentIndexOfSprite = 0;
+
     private void Awake()
     {
         CountOfAvailableExtractions = InitialCountOfExtractions = _arraySpriteRenderers.Length;
@@ -39,5 +41,11 @@ public class ResourcesDeposit : MonoBehaviour
 
         CountOfAvailableExtractions--;
         return CountOfResourcesFor1Extraction;
+    }
+
+    public void SetSpriteAfterExtraction()
+    {
+        _arraySpriteRenderers[_currentIndexOfSprite].sprite = _spriteAfterExtraction;
+        _currentIndexOfSprite++;
     }
 }

@@ -78,10 +78,17 @@ public class RobotsManager : MonoBehaviour
             .FirstOrDefault();
     }
 
-    private async UniTask MoveRobotAsync(Robot robot, ResourcesDeposit resourcesDeposit)
+    private async UniTask MoveRobotAsync(Robot robot, ResourcesDeposit resourcesDeposit, 
+        bool isExtraction)
     {
         await MoveToPosition(robot, resourcesDeposit.transform.position);
         await UniTask.Delay(1000);
+        
+        if (isExtraction)
+        {
+            resourcesDeposit.SetSpriteAfterExtraction();
+        }
+        
         await MoveToPosition(robot, transform.position);
         robot.gameObject.SetActive(false);
     }
@@ -135,7 +142,7 @@ public class RobotsManager : MonoBehaviour
         }
 
         inactiveRobot.gameObject.SetActive(true);
-        await MoveRobotAsync(inactiveRobot, nearestDeposit);
+        await MoveRobotAsync(inactiveRobot, nearestDeposit, false);
         return nearestDeposit.ResourceId;
     }
 
@@ -167,7 +174,7 @@ public class RobotsManager : MonoBehaviour
         }
 
         inactiveRobot.gameObject.SetActive(true);
-        await MoveRobotAsync(inactiveRobot, resourcesDeposit);
+        await MoveRobotAsync(inactiveRobot, resourcesDeposit, true);
         return countOfResources;
     }
 
