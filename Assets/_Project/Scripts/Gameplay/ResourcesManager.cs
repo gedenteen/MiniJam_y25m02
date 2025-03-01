@@ -107,7 +107,7 @@ public class ResourcesManager : MonoBehaviour
                 break;
             }
         }
-        
+
         lock (_lock)
         {
             CountOfAvailableRobots.Value++;
@@ -115,18 +115,31 @@ public class ResourcesManager : MonoBehaviour
         Debug.Log("ResourcesManager: SendRobotToInvestigate: Robot returned from investigation");
     }
 
-    public void ChangeCountOfEnergy(int summand)
+    public async UniTask ExtractResource(ExtractableResourceId resourceId)
     {
-        Energy.Value += summand;
-    }
-
-    public void ChangeCountOfCoal(int summand)
-    {
-        if (summand > 0)
+        if (_dictExtractableResources[resourceId].AvailableDeposits.Value <= 0)
         {
-            PropertiesCoal.ExtractedResources.Value += summand;
+            Debug.LogError($"ResourcesManager: ExtractResource: there is no available " +
+                $"deposits for {resourceId}");
+            return;
         }
 
-        PropertiesCoal.AvailableResources.Value += summand;
+        _dictExtractableResources[resourceId].ExtractedResources.Value += 123;
+        _dictExtractableResources[resourceId].AvailableResources.Value += 123;
     }
+
+    // public void ChangeCountOfEnergy(int summand)
+    // {
+    //     Energy.Value += summand;
+    // }
+
+    // public void ChangeCountOfCoal(int summand)
+    // {
+    //     if (summand > 0)
+    //     {
+    //         PropertiesCoal.ExtractedResources.Value += summand;
+    //     }
+
+    //     PropertiesCoal.AvailableResources.Value += summand;
+    // }
 }
