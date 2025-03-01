@@ -56,6 +56,7 @@ public class LevelMenu : UiPanel
     {
         if (SceneTransition.instance != null)
         {
+            Time.timeScale = 1f;
             SceneTransition.instance.ReloadCurrentScene();
         }
     }

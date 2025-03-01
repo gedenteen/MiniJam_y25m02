@@ -7,6 +7,7 @@
     "com.marijnzwemmer.unity-toolbar-extender": "https://github.com/marijnz/unity-toolbar-extender.git",
     "com.nuclearband.projectfoldericons": "https://github.com/NuclearBand/NuclearProjectFolderIcons.git",
     "com.storm.unitysetuputility": "https://github.com/IronFake/UnitySetupUtility.git#upm",
+    "com.unity.2d.pixel-perfect": "5.0.3",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.3.1",
     "com.unity.feature.development": "1.0.1",
