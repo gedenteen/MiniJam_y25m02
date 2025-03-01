@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,67 +11,64 @@ public class RobotsManager : MonoBehaviour
     [Header("References to other objects")]
     [SerializeField] private List<Robot> _listRobots;
     [SerializeField] private List<ResourcesDeposit> _initialListDeposits;
+    [SerializeField] private ResourcesManager _resourcesManager;
 
     [Header("These lists should be empty at game start")]
     [SerializeField] private List<ResourcesDeposit> _listUndiscoveredDeposits;
-    [SerializeField] private List<ResourcesDeposit> _listAvailableDeposits;
+    private Dictionary<ExtractableResourceId, List<ResourcesDeposit>> _dictAvailableDeposits;
 
     [Header("Parameters")]
     [SerializeField] private float _robotSpeed = 2f;
 
+    #region MonoBehaviour's methods
+
     private void Start()
+    {
+        CheckLists();
+
+        _listUndiscoveredDeposits = _initialListDeposits;
+
+        InitializelDictAvailableDeposits();
+    }
+
+    private void CheckLists()
     {
         if (_listRobots == null || _listRobots.Count == 0)
         {
-            Debug.LogError("RobotsManager: Start: No robots assigned");
+            Debug.LogError("RobotsManager: CheckLists: No robots assigned");
         }
 
         if (_initialListDeposits == null || _initialListDeposits.Count == 0)
         {
-            Debug.LogError("RobotsManager: Start: No resource deposits assigned");
+            Debug.LogError("RobotsManager: CheckLists: No resource deposits assigned");
         }
 
-        _listUndiscoveredDeposits = _initialListDeposits;
+        // if (_listAvailableDeposits != null && _listAvailableDeposits.Count != 0)
+        // {
+        //     Debug.LogError("RobotsManager: CheckLists: _listAvailableDeposits should be empty");
+        // }
+    }
 
-        if (_listAvailableDeposits != null && _listAvailableDeposits.Count != 0)
+    private void InitializelDictAvailableDeposits()
+    {
+        _dictAvailableDeposits = new Dictionary<ExtractableResourceId, List<ResourcesDeposit>>();
+
+        foreach (ExtractableResourceId resourceId in Enum.GetValues(typeof(ExtractableResourceId)))
         {
-            Debug.LogError("RobotsManager: Start: _listAvailableDeposits should be empty");
+            if (resourceId == ExtractableResourceId.Undefined)
+                continue;
+
+            _dictAvailableDeposits[resourceId] = new List<ResourcesDeposit>();
         }
     }
 
-    public async UniTask<ExtractableResourceId> SendRobotToResourcesDeposit()
+    #endregion
+
+    [Button] // Call it in Editor
+    private void FindAllResourcesDeposits()
     {
-        Robot inactiveRobot = _listRobots.FirstOrDefault(r => !r.gameObject.activeSelf);
-
-        if (inactiveRobot == null)
-        {
-            Debug.LogError("RobotsManager: SendRobotToResourcesDeposit: No inactive robots " +
-                "available!");
-            return ExtractableResourceId.Undefined;
-        }
-
-        if (_listUndiscoveredDeposits.Count == 0)
-        {
-            Debug.LogError("RobotsManager: SendRobotToResourcesDeposit: there is no " +
-                $"undiscovered deposits");
-            return ExtractableResourceId.Undefined;
-
-        }
-
-        ResourcesDeposit nearestDeposit = FindNearestDeposit();
-        _listUndiscoveredDeposits.Remove(nearestDeposit);
-        _listAvailableDeposits.Add(nearestDeposit);
-
-        if (nearestDeposit == null)
-        {
-            Debug.LogError("RobotsManager: SendRobotToResourcesDeposit: No valid resource " +
-                $"deposits found!");
-            return ExtractableResourceId.Undefined;
-        }
-
-        inactiveRobot.gameObject.SetActive(true);
-        await MoveRobotAsync(inactiveRobot, nearestDeposit);
-        return nearestDeposit.ResourceId;
+        ResourcesDeposit[] arrayDeposits = FindObjectsOfType<ResourcesDeposit>();
+        _initialListDeposits = new List<ResourcesDeposit>(arrayDeposits);
     }
 
     private ResourcesDeposit FindNearestDeposit()
@@ -98,4 +96,80 @@ public class RobotsManager : MonoBehaviour
             await UniTask.Yield();
         }
     }
+
+    private Robot GetInactiveRobot()
+    {
+        return _listRobots.FirstOrDefault(r => !r.gameObject.activeSelf);
+    } 
+
+    #region Public methods
+
+    public async UniTask<ExtractableResourceId> SendRobotToResourcesDeposit()
+    {
+        Robot inactiveRobot = GetInactiveRobot();
+
+        if (inactiveRobot == null)
+        {
+            Debug.LogError("RobotsManager: SendRobotToResourcesDeposit: No inactive robots " +
+                "available!");
+            return ExtractableResourceId.Undefined;
+        }
+
+        if (_listUndiscoveredDeposits.Count == 0)
+        {
+            Debug.LogError("RobotsManager: SendRobotToResourcesDeposit: there is no " +
+                $"undiscovered deposits");
+            return ExtractableResourceId.Undefined;
+
+        }
+
+        ResourcesDeposit nearestDeposit = FindNearestDeposit();
+        _listUndiscoveredDeposits.Remove(nearestDeposit);
+        _dictAvailableDeposits[nearestDeposit.ResourceId].Add(nearestDeposit);
+
+        if (nearestDeposit == null)
+        {
+            Debug.LogError("RobotsManager: SendRobotToResourcesDeposit: No valid resource " +
+                $"deposits found!");
+            return ExtractableResourceId.Undefined;
+        }
+
+        inactiveRobot.gameObject.SetActive(true);
+        await MoveRobotAsync(inactiveRobot, nearestDeposit);
+        return nearestDeposit.ResourceId;
+    }
+
+    public async UniTask<int> ExtractResource(ExtractableResourceId resourceId)
+    {
+        if (_dictAvailableDeposits[resourceId].Count == 0)
+        {
+            Debug.LogError($"RobotsManager: ExtractResource: i have no available deposits " +
+                $"of {resourceId}");
+            return 0;
+        }
+
+        ResourcesDeposit resourcesDeposit = _dictAvailableDeposits[resourceId][0];
+
+        Robot inactiveRobot = GetInactiveRobot();
+
+        if (inactiveRobot == null)
+        {
+            Debug.LogError("RobotsManager: ExtractResource: No inactive robots " +
+                "available!");
+            return 0;
+        }
+
+        int countOfResources = resourcesDeposit.ExtractResources();
+        if (resourcesDeposit.CountOfAvailableExtractions == 0)
+        {
+            _dictAvailableDeposits[resourceId].Remove(resourcesDeposit);
+            _resourcesManager.DecreaseCountOfAvailableDeposits(resourceId);
+        }
+
+        inactiveRobot.gameObject.SetActive(true);
+        await MoveRobotAsync(inactiveRobot, resourcesDeposit);
+        return countOfResources;
+    }
+
+    #endregion
 }

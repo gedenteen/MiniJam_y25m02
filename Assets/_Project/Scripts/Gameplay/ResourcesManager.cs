@@ -117,8 +117,15 @@ public class ResourcesManager : MonoBehaviour
             return;
         }
 
-        _dictExtractableResources[resourceId].ExtractedResources.Value += 123;
-        _dictExtractableResources[resourceId].AvailableResources.Value += 123;
+        int countOfResources = await _robotsManager.ExtractResource(resourceId);
+
+        _dictExtractableResources[resourceId].ExtractedResources.Value += countOfResources;
+        _dictExtractableResources[resourceId].AvailableResources.Value += countOfResources;
+    }
+
+    public void DecreaseCountOfAvailableDeposits(ExtractableResourceId resourceId)
+    {
+        _dictExtractableResources[resourceId].AvailableDeposits.Value--;
     }
 
     // public void ChangeCountOfEnergy(int summand)

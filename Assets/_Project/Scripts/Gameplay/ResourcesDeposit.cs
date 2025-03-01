@@ -8,6 +8,7 @@ public class ResourcesDeposit : MonoBehaviour
 {
     [field: SerializeField] public ExtractableResourceId ResourceId { get; private set; } = 
         ExtractableResourceId.Undefined;
+    [field: SerializeField] public int CountOfResourcesFor1Extraction { get; private set; } = 12;
     [field: SerializeField] public int InitialCountOfExtractions { get; private set; } = -999;
     [field: SerializeField] public int CountOfAvailableExtractions { get; private set; } = -999;
 
@@ -26,5 +27,17 @@ public class ResourcesDeposit : MonoBehaviour
     private void GetAllChildSpriteRenderers()
     {
         _arraySpriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+    }
+
+    public int ExtractResources()
+    {
+        if (CountOfAvailableExtractions <= 0)
+        {
+            Debug.LogError($"ResourcesDeposit: ExtractResources: i have no resources");
+            return 0;
+        }
+
+        CountOfAvailableExtractions--;
+        return CountOfResourcesFor1Extraction;
     }
 }
