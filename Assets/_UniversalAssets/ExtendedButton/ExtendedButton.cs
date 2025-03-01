@@ -6,15 +6,15 @@ using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine.EventSystems;
-using Unity.VisualScripting;
 
 public class ExtendedButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("References to my objects")]
-    [SerializeField] private Button _myButton;
-    [SerializeField] private Image _myImage;
+    [SerializeField] public Button Button;
+    [SerializeField] private Image _backgroundImage;
     [SerializeField] private TextMeshProUGUI _myText;
     [SerializeField] private List<Image> _verticalImages;
+    [SerializeField] private Image _imageLock;
 
     [Header("Parameters")]
     [SerializeField] private int _timeForChangeColorsInMs = 50;
@@ -24,20 +24,25 @@ public class ExtendedButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void Awake()
     {
-        if (_myButton == null)
+        if (Button == null)
         {
             Debug.LogError($"ExtendedButton: Awake: i have no reference to my button");
             return;
         }
 
-        _startColorOfImage = _myImage.color;
+        _startColorOfImage = _backgroundImage.color;
         _startColorOfText = _myText.color;
 
-        _myButton.onClick.AddListener(OnClick);
+        Button.onClick.AddListener(OnClick);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!Button.interactable)
+        {
+            return;
+        }
+
         for (int i = 0; i < _verticalImages.Count; i++)
         {
             _verticalImages[i].gameObject.SetActive(true);
@@ -52,6 +57,15 @@ public class ExtendedButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
     }
 
+    public void SetInteractable(bool isInteractable)
+    {
+        Button.interactable = isInteractable;
+        if (_imageLock.gameObject.activeSelf == isInteractable)
+        {
+            _imageLock.gameObject.SetActive(!isInteractable);
+        }
+    }
+
     private void OnClick()
     {
         ExtendedButtonManager.eventPlaySound.Invoke();
@@ -60,12 +74,12 @@ public class ExtendedButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private async UniTask ChangeColors()
     {
-        _myImage.color = _startColorOfText;
+        _backgroundImage.color = _startColorOfText;
         _myText.color = _startColorOfImage;
         await UniTask.Delay(TimeSpan.FromMilliseconds(_timeForChangeColorsInMs));
 
-        if (_myImage != null)
-            _myImage.color = _startColorOfImage;
+        if (_backgroundImage != null)
+            _backgroundImage.color = _startColorOfImage;
         if (_myText != null)
             _myText.color = _startColorOfText;
     }
