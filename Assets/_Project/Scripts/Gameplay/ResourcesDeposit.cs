@@ -46,6 +46,10 @@ public class ResourcesDeposit : MonoBehaviour
     public void SetSpriteAfterExtraction()
     {
         _arraySpriteRenderers[_currentIndexOfSprite].sprite = _spriteAfterExtraction;
+        if (!_arraySpriteRenderers[_currentIndexOfSprite].gameObject.activeSelf)
+        {
+            _arraySpriteRenderers[_currentIndexOfSprite].gameObject.SetActive(true);
+        }
         _currentIndexOfSprite++;
     }
 }

@@ -95,11 +95,12 @@ public class ResourcesManager : MonoBehaviour
         {
             Debug.LogError("ResourcesManager: SendRobotToInvestigate: got " +
                 "ExtractableResourceId.Undefined");
-            return;
         }
-
-        _dictExtractableResources[resourceId].DiscoveredDeposits.Value++;
-        _dictExtractableResources[resourceId].AvailableDeposits.Value++;
+        else
+        {
+            _dictExtractableResources[resourceId].DiscoveredDeposits.Value++;
+            _dictExtractableResources[resourceId].AvailableDeposits.Value++;
+        }
 
         lock (_lock)
         {

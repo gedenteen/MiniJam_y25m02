@@ -10,6 +10,7 @@ public class ActionsManager : MonoBehaviour
     [Header("References to my buttons")]
     [SerializeField] private Button _buttonSendRobotToInvestigate;
     [SerializeField] private Button _buttonGatherWood;
+    [SerializeField] private Button _buttonGatherCoal;
 
     [Header("References to other objects")]
     [SerializeField] private ResourcesManager _resourcesManager;
@@ -23,6 +24,10 @@ public class ActionsManager : MonoBehaviour
         _buttonGatherWood.onClick.AddListener(() => 
             _resourcesManager.ExtractResource(ExtractableResourceId.Wood).Forget());
         SubscribeToChanges(_resourcesManager.PropertiesWood.AvailableDeposits, _buttonGatherWood);
+
+        _buttonGatherCoal.onClick.AddListener(() => 
+            _resourcesManager.ExtractResource(ExtractableResourceId.Coal).Forget());
+        SubscribeToChanges(_resourcesManager.PropertiesCoal.AvailableDeposits, _buttonGatherCoal);
     }
 
     private void SubscribeToChanges(ReactiveProperty<int> property, Button button)
