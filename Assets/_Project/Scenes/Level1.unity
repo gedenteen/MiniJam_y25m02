@@ -157,13 +157,30 @@ MonoBehaviour:
   TotalCountOfRobots:
     value: 5
   CountOfAvailableRobots:
-    value: 500
+    value: 5
   CountOfDays:
-    value: 1
+    value: 0
+  HarmToNature:
+    value: 0
+  DiscoveredForests:
+    value: 0
+  AvailableForests:
+    value: 0
   Wood:
-    value: 50
+    value: 0
+  DiscoveredCoalDeposits:
+    value: 0
+  AvailableCoalDeposits:
+    value: 0
   Coal:
-    value: 30
+    value: 0
+  DiscoveredSiliconDeposits:
+    value: 0
+  AvailableSiliconDeposits:
+    value: 0
+  Silicon:
+    value: 0
+  _configOfInvestigations: {fileID: 11400000, guid: 97d69840dc6e18843a9fa828b6b29a8c, type: 2}
   _minTimeForInvestigate: 1
   _maxTimeForInvestigate: 3
 --- !u!4 &84515595
