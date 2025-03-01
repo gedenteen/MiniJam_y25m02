@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 using NaughtyAttributes;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 
 public class ResourcesManager : MonoBehaviour
 {
@@ -14,20 +15,10 @@ public class ResourcesManager : MonoBehaviour
     public ReactiveProperty<int> CountOfDays = new ReactiveProperty<int>(0);
     public ReactiveProperty<int> HarmToNature = new ReactiveProperty<int>(0);
 
-    [Header("Resources: wood")]
-    public ReactiveProperty<int> DiscoveredForests = new ReactiveProperty<int>(0);
-    public ReactiveProperty<int> AvailableForests = new ReactiveProperty<int>(0);
-    public ReactiveProperty<int> Wood = new ReactiveProperty<int>(0);
-
-    [Header("Resources: coal")]
-    public ReactiveProperty<int> DiscoveredCoalDeposits = new ReactiveProperty<int>(0);
-    public ReactiveProperty<int> AvailableCoalDeposits = new ReactiveProperty<int>(0);
-    public ReactiveProperty<int> Coal = new ReactiveProperty<int>(0);
-
-    [Header("Resources: coal")]
-    public ReactiveProperty<int> DiscoveredSiliconDeposits = new ReactiveProperty<int>(0);
-    public ReactiveProperty<int> AvailableSiliconDeposits = new ReactiveProperty<int>(0);
-    public ReactiveProperty<int> Silicon = new ReactiveProperty<int>(0);
+    [Header("Resources: extractable")]
+    public PropertiesOfExtractableResource PropertiesWood = new PropertiesOfExtractableResource();
+    public PropertiesOfExtractableResource PropertiesCoal = new PropertiesOfExtractableResource();
+    public PropertiesOfExtractableResource PropertiesSilicon = new PropertiesOfExtractableResource();
 
     [Header("References to other objects")]
     [SerializeField] private ConfigInvestigations _configOfInvestigations;
@@ -35,7 +26,52 @@ public class ResourcesManager : MonoBehaviour
     [SerializeField] private float _minTimeForInvestigate = 1f;
     [SerializeField] private float _maxTimeForInvestigate = 3f;
 
+    private Dictionary<ExtractableResourceId, Vector2> _dictChancesOfInvestigations;
+    private Dictionary<ExtractableResourceId, PropertiesOfExtractableResource> 
+        _dictExtractableResources;
+
     private readonly object _lock = new object();
+
+    private void Awake()
+    {
+        FillDictChancesOfInvestigations();
+        FillDictExtractableResources();
+    }
+
+    private void FillDictChancesOfInvestigations()
+    {
+        // Fill _dictChancesOfInvestigations with values from SO ConfigInvestigations
+        _dictChancesOfInvestigations = new Dictionary<ExtractableResourceId, Vector2>();
+        _dictChancesOfInvestigations[ExtractableResourceId.Wood] = 
+            _configOfInvestigations.ChanceForForest;
+        _dictChancesOfInvestigations[ExtractableResourceId.Coal] = 
+            _configOfInvestigations.ChanceForCoal;
+        _dictChancesOfInvestigations[ExtractableResourceId.Silicon] = 
+            _configOfInvestigations.ChanceForSilicon;
+
+        float sumOfChances = 0f;
+        foreach (var pair in _dictChancesOfInvestigations)
+        {
+            Vector2 chanceRange = pair.Value;
+            sumOfChances += chanceRange.y - chanceRange.x;
+        }
+
+        //Debug.Log($"ResourcesManager: FillDictChancesOfInvestigations: sumOfChances={sumOfChances}");
+        if (sumOfChances < 0.999f || sumOfChances > 1.001f)
+        {
+            Debug.LogError($"ResourcesManager: FillDictChancesOfInvestigations: wrong sum of " +
+                $"chances = {sumOfChances} (should be 1.0)");
+        }
+    }
+
+    private void FillDictExtractableResources()
+    {
+        _dictExtractableResources =
+            new Dictionary<ExtractableResourceId, PropertiesOfExtractableResource>();
+        _dictExtractableResources[ExtractableResourceId.Wood] = PropertiesWood;
+        _dictExtractableResources[ExtractableResourceId.Coal] = PropertiesCoal;
+        _dictExtractableResources[ExtractableResourceId.Silicon] = PropertiesSilicon;
+    }
 
     [Button]
     public async UniTask SendRobotToInvestigate()
@@ -58,27 +94,42 @@ public class ResourcesManager : MonoBehaviour
         float chanceValue = UnityEngine.Random.Range(0f, 1f);
         Debug.Log($"ResourcesManager: SendRobotToInvestigate: chanceValue={chanceValue}");
 
-        if (chanceValue >= _configOfInvestigations.ChanceForForest.x 
-            &&
-            chanceValue <= _configOfInvestigations.ChanceForForest.y)
+        foreach (var pair in _dictChancesOfInvestigations)
         {
-            DiscoveredForests.Value++;
-            AvailableForests.Value++;
+            ExtractableResourceId resourceId = pair.Key;
+            Vector2 chanceRange = pair.Value;
+            
+            if (chanceValue >= chanceRange.x && chanceValue <= chanceRange.y)
+            {
+                Debug.Log($"ResourcesManager: SendRobotToInvestigate: found resource {resourceId}");
+                _dictExtractableResources[resourceId].DiscoveredDeposits.Value++;
+                _dictExtractableResources[resourceId].AvailableDeposits.Value++;
+                break;
+            }
         }
-        else if (chanceValue >= _configOfInvestigations.ChanceForCoal.x 
-                 &&
-                 chanceValue <= _configOfInvestigations.ChanceForCoal.y)
-        {
-            DiscoveredCoalDeposits.Value++;
-            AvailableCoalDeposits.Value++;
-        }
-        else if (chanceValue >= _configOfInvestigations.ChanceForSilicon.x 
-                 &&
-                 chanceValue <= _configOfInvestigations.ChanceForSilicon.y)
-        {
-            DiscoveredSiliconDeposits.Value++;
-            AvailableSiliconDeposits.Value++;
-        }
+
+        // if (chanceValue >= _configOfInvestigations.ChanceForForest.x 
+        //     &&
+        //     chanceValue <= _configOfInvestigations.ChanceForForest.y)
+        // {
+            
+        //     PropertiesWood.DiscoveredDeposits.Value++;
+        //     PropertiesWood.AvailableDeposits.Value++;
+        // }
+        // else if (chanceValue >= _configOfInvestigations.ChanceForCoal.x 
+        //          &&
+        //          chanceValue <= _configOfInvestigations.ChanceForCoal.y)
+        // {
+        //     PropertiesCoal.DiscoveredDeposits.Value++;
+        //     PropertiesCoal.AvailableDeposits.Value++;
+        // }
+        // else if (chanceValue >= _configOfInvestigations.ChanceForSilicon.x 
+        //          &&
+        //          chanceValue <= _configOfInvestigations.ChanceForSilicon.y)
+        // {
+        //     PropertiesSilicon.DiscoveredDeposits.Value++;
+        //     PropertiesSilicon.AvailableDeposits.Value++;
+        // }
 
         lock (_lock)
         {
@@ -94,6 +145,11 @@ public class ResourcesManager : MonoBehaviour
 
     public void ChangeCountOfCoal(int summand)
     {
-        Coal.Value += summand;
+        if (summand > 0)
+        {
+            PropertiesCoal.ExtractedResources.Value += summand;
+        }
+
+        PropertiesCoal.AvailableResources.Value += summand;
     }
 }
