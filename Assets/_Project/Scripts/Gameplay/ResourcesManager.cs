@@ -129,4 +129,27 @@ public class ResourcesManager : MonoBehaviour
     {
         _dictExtractableResources[resourceId].AvailableDeposits.Value--;
     }
+
+    public async UniTask ConvertResourceToEnergy(ExtractableResourceId resourceId)
+    {
+        switch (resourceId)
+        {
+            case ExtractableResourceId.Undefined:
+            case ExtractableResourceId.Silicon:
+                Debug.LogError($"ResourcesManager: ConvertResourceToEnergy: can't convert " +
+                    $"{resourceId} into energy");
+                return;
+        }
+
+        if (_dictExtractableResources[resourceId].AvailableResources.Value <= 0)
+        {
+            Debug.LogError($"ResourcesManager: ExtractResource: there is no available " +
+                $"resources of {resourceId}");
+            return;
+        }
+
+        _dictExtractableResources[resourceId].AvailableResources.Value--;
+        await UniTask.WaitForSeconds(3f);
+        Energy.Value++;
+    }
 }

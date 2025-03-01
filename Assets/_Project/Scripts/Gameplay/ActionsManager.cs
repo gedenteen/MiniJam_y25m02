@@ -10,6 +10,7 @@ public class ActionsManager : MonoBehaviour
     [Header("References to my buttons")]
     [SerializeField] private ActionButton _buttonSendRobotToInvestigate;
     [SerializeField] private ActionButton _buttonGatherWood;
+    [SerializeField] private ActionButton _buttonBurnWood;
     [SerializeField] private ActionButton _buttonGatherCoal;
 
     [Header("References to other objects")]
@@ -29,18 +30,57 @@ public class ActionsManager : MonoBehaviour
             _resourcesManager.PropertiesWood.AvailableDeposits, 
             _buttonGatherWood);
 
+        // Burn wood
+        _buttonBurnWood.Button.onClick.AddListener(() =>
+            _resourcesManager.ConvertResourceToEnergy(ExtractableResourceId.Wood).Forget());
+        SubscribeToAvailableResource(
+            _resourcesManager.PropertiesWood.AvailableResources, 
+            _buttonBurnWood);
+        Debug.Log($"ActionsManager: Manager: avaiable wood = " +
+            $"{_resourcesManager.PropertiesWood.AvailableResources}");
+
         // Extract coal
         _buttonGatherCoal.Button.onClick.AddListener(() => 
             _resourcesManager.ExtractResource(ExtractableResourceId.Coal).Forget());
         SubscribeToAvailableDeposits(
             _resourcesManager.PropertiesCoal.AvailableDeposits,
             _buttonGatherCoal);
+
     }
 
-    private void SubscribeToAvailableRobots(ExtendedButton button)
+    private void SubscribeToAvailableRobots(ActionButton button)
     {
         _resourcesManager.CountOfAvailableRobots.Subscribe(newValue =>
         {
+            if (newValue <= 0) 
+            {
+                button.SetInteractable(false);
+            }
+            else
+            {
+                button.SetInteractable(true);
+            }
+        }).AddTo(this);
+    }
+
+    private void SubscribeToAvailableResource(ReactiveProperty<int> resourceProperty,
+        ActionButton button)
+    {
+        int currentValue = resourceProperty.Value;
+
+        if (currentValue == 0)
+        {
+            button.ActivateCanvasGroup(false);
+        }
+
+        resourceProperty.Subscribe(newValue =>
+        {
+            // Кнопка сейчас скрыта и новое значение больше 0?
+            if (!button.CanvasGroup.interactable && newValue > 0) 
+            {
+                // Показываем кнопку
+                button.ActivateCanvasGroup(true);
+            }
             if (newValue <= 0) 
             {
                 button.SetInteractable(false);
