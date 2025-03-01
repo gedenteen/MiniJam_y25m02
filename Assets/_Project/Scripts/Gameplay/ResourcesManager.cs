@@ -93,7 +93,7 @@ public class ResourcesManager : MonoBehaviour
 
         if (resourceId == ExtractableResourceId.Undefined)
         {
-            Debug.Log("ResourcesManager: SendRobotToInvestigate: got " +
+            Debug.LogError("ResourcesManager: SendRobotToInvestigate: got " +
                 "ExtractableResourceId.Undefined");
             return;
         }

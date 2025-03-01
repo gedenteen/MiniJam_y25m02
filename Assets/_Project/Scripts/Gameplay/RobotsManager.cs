@@ -7,8 +7,15 @@ using UnityEngine;
 
 public class RobotsManager : MonoBehaviour
 {
+    [Header("References to other objects")]
     [SerializeField] private List<Robot> _listRobots;
-    [SerializeField] private List<ResourcesDeposit> _listResorcesDeposits;
+    [SerializeField] private List<ResourcesDeposit> _initialListDeposits;
+
+    [Header("These lists should be empty at game start")]
+    [SerializeField] private List<ResourcesDeposit> _listUndiscoveredDeposits;
+    [SerializeField] private List<ResourcesDeposit> _listAvailableDeposits;
+
+    [Header("Parameters")]
     [SerializeField] private float _robotSpeed = 2f;
 
     private void Start()
@@ -18,9 +25,16 @@ public class RobotsManager : MonoBehaviour
             Debug.LogError("RobotsManager: Start: No robots assigned");
         }
 
-        if (_listResorcesDeposits == null || _listResorcesDeposits.Count == 0)
+        if (_initialListDeposits == null || _initialListDeposits.Count == 0)
         {
             Debug.LogError("RobotsManager: Start: No resource deposits assigned");
+        }
+
+        _listUndiscoveredDeposits = _initialListDeposits;
+
+        if (_listAvailableDeposits != null && _listAvailableDeposits.Count != 0)
+        {
+            Debug.LogError("RobotsManager: Start: _listAvailableDeposits should be empty");
         }
     }
 
@@ -30,15 +44,27 @@ public class RobotsManager : MonoBehaviour
 
         if (inactiveRobot == null)
         {
-            Debug.LogError("RobotsManager: Start: No inactive robots available!");
+            Debug.LogError("RobotsManager: SendRobotToResourcesDeposit: No inactive robots " +
+                "available!");
             return ExtractableResourceId.Undefined;
         }
 
+        if (_listUndiscoveredDeposits.Count == 0)
+        {
+            Debug.LogError("RobotsManager: SendRobotToResourcesDeposit: there is no " +
+                $"undiscovered deposits");
+            return ExtractableResourceId.Undefined;
+
+        }
+
         ResourcesDeposit nearestDeposit = FindNearestDeposit();
+        _listUndiscoveredDeposits.Remove(nearestDeposit);
+        _listAvailableDeposits.Add(nearestDeposit);
 
         if (nearestDeposit == null)
         {
-            Debug.LogError("RobotsManager: Start: No valid resource deposits found!");
+            Debug.LogError("RobotsManager: SendRobotToResourcesDeposit: No valid resource " +
+                $"deposits found!");
             return ExtractableResourceId.Undefined;
         }
 
@@ -49,7 +75,7 @@ public class RobotsManager : MonoBehaviour
 
     private ResourcesDeposit FindNearestDeposit()
     {
-        return _listResorcesDeposits
+        return _listUndiscoveredDeposits
             .OrderBy(d => Vector2.Distance(transform.position, d.transform.position))
             .FirstOrDefault();
     }
