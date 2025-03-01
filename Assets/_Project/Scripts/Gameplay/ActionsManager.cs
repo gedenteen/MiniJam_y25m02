@@ -17,42 +17,84 @@ public class ActionsManager : MonoBehaviour
 
     private void Awake()
     {
+        // Send Robot To Investigate
         _buttonSendRobotToInvestigate.Button.onClick.AddListener(() => 
             _resourcesManager.SendRobotToInvestigate().Forget());
-        SubscribeToChanges(_resourcesManager.CountOfAvailableRobots, _buttonSendRobotToInvestigate);
+        SubscribeToAvailableRobots(_buttonSendRobotToInvestigate);
         
+        // Extract wood
         _buttonGatherWood.Button.onClick.AddListener(() => 
             _resourcesManager.ExtractResource(ExtractableResourceId.Wood).Forget());
-        SubscribeToChanges(_resourcesManager.PropertiesWood.AvailableDeposits, _buttonGatherWood);
+        SubscribeToAvailableDeposits(
+            _resourcesManager.PropertiesWood.AvailableDeposits, 
+            _buttonGatherWood);
 
+        // Extract coal
         _buttonGatherCoal.Button.onClick.AddListener(() => 
             _resourcesManager.ExtractResource(ExtractableResourceId.Coal).Forget());
-        SubscribeToChanges(_resourcesManager.PropertiesCoal.AvailableDeposits, _buttonGatherCoal);
+        SubscribeToAvailableDeposits(
+            _resourcesManager.PropertiesCoal.AvailableDeposits,
+            _buttonGatherCoal);
     }
 
-    private void SubscribeToChanges(ReactiveProperty<int> property, ExtendedButton button)
+    private void SubscribeToAvailableRobots(ExtendedButton button)
     {
-        int currentValue = property.Value;
+        _resourcesManager.CountOfAvailableRobots.Subscribe(newValue =>
+        {
+            if (newValue <= 0) 
+            {
+                button.SetInteractable(false);
+            }
+            else
+            {
+                button.SetInteractable(true);
+            }
+        }).AddTo(this);
+    }
+
+    private void SubscribeToAvailableDeposits(ReactiveProperty<int> depositProperty, 
+        ExtendedButton button)
+    {
+        int currentValue = depositProperty.Value;
 
         if (currentValue == 0)
         {
             button.gameObject.SetActive(false);
         }
 
-        property.Subscribe(newValue =>
+        _resourcesManager.CountOfAvailableRobots.Subscribe(newValue =>
+        {
+            if (newValue <= 0) 
+            {
+                button.SetInteractable(false);
+            }
+            else if (depositProperty.Value > 0)
+            {
+                // Делаем кнопку интерактивной, только если кол-во доступных месторождений > 0
+                // И кол-во доступных роботов > 0
+                button.SetInteractable(true);
+            }
+        }).AddTo(this);
+
+        depositProperty.Subscribe(newValue =>
         {
             // Объект сейчас деактивирован и новое значение больше 0?
             if (!button.gameObject.activeSelf && newValue > 0) 
             {
                 button.gameObject.SetActive(true);
             }
-            if (button.gameObject.activeSelf && newValue == 0)
+            if (button.gameObject.activeSelf)
             {
-                button.SetInteractable(false);
-            }
-            if (button.gameObject.activeSelf && newValue != 0)
-            {
-                button.SetInteractable(true);
+                if (newValue <= 0)
+                {
+                    button.SetInteractable(false);
+                }
+                else if (_resourcesManager.CountOfAvailableRobots.Value != 0)
+                {
+                    // Делаем кнопку интерактивной, только если кол-во доступных месторождений > 0
+                    // И кол-во доступных роботов > 0
+                    button.SetInteractable(true);
+                }
             }
         }).AddTo(this);
     }
