@@ -69,6 +69,11 @@ public class RobotsManager : MonoBehaviour
     {
         ResourcesDeposit[] arrayDeposits = FindObjectsOfType<ResourcesDeposit>();
         _initialListDeposits = new List<ResourcesDeposit>(arrayDeposits);
+        
+        for (int i = 0; i < _initialListDeposits.Count; i++)
+        {
+            _initialListDeposits[i].GetAllChildSpriteRenderers();
+        }
     }
 
     private ResourcesDeposit FindNearestDeposit()
