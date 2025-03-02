@@ -2850,9 +2850,9 @@ MonoBehaviour:
   Energy:
     value: 0
   TotalCountOfRobots:
-    value: 6
+    value: 7
   CountOfAvailableRobots:
-    value: 6
+    value: 7
   CountOfCreatedRobots:
     value: 0
   CountOfSolarPanels:
