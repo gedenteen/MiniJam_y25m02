@@ -29,6 +29,7 @@ public class ResourcesDeposit : MonoBehaviour
     private void GetAllChildSpriteRenderers()
     {
         _arraySpriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        Debug.Log($"ResourcesDeposit: GetAllChildSpriteRenderers: end");
     }
 
     public int ExtractResources()
