@@ -371,7 +371,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1021366423562348990, guid: c70138ff09725d645b2dd3ff251c3921, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -466,7 +466,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 1021366423562348990, guid: c70138ff09725d645b2dd3ff251c3921, type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 763ef42fba64cd848b66cc3b5daf8f67, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2918,7 +2918,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 864186026}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -5859,7 +5859,12 @@ MonoBehaviour:
     Development, 2D art, gamedesign:
 
     Dmitry ''gedenteen''
-    Razumov'
+    Razumov
+
+
+    Music:
+
+    Carbon Based Lifeforms - Dodecahedron'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c4db9aeb3c7eead4d8a38453de840bdd, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
