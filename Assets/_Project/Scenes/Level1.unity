@@ -1953,6 +1953,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5027a84726dbdb1439b0724aa833850e, type: 3}
     - target: {fileID: 4324717146551772694, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
       propertyPath: m_Name
       value: CountOfAvailableSiliconDeposits
@@ -2130,6 +2134,22 @@ PrefabInstance:
     - target: {fileID: 1105349176940370185, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: feb3d63cf463d6c4c8646b7176020791, type: 3}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4324717146551772694, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
       propertyPath: m_Name
@@ -4521,6 +4541,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b6c9fe5786e010d4d89151737f2d525c, type: 3}
     - target: {fileID: 4324717146551772694, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
       propertyPath: m_Name
       value: CountOfAvailableCoalDeposits
@@ -8654,6 +8678,22 @@ PrefabInstance:
     - target: {fileID: 1105349176940370185, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: feb3d63cf463d6c4c8646b7176020791, type: 3}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949722047154216370, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4324717146551772694, guid: c457ea7766b03ec4184ec3305e313439, type: 3}
       propertyPath: m_Name
