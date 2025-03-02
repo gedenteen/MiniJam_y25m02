@@ -42132,12 +42132,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2577464034029894481, guid: e123566542e1abc4796f529b071da74f, type: 3}
       propertyPath: _arraySpriteRenderers.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2577464034029894481, guid: e123566542e1abc4796f529b071da74f, type: 3}
       propertyPath: _arraySpriteRenderers.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1490909602}
     - target: {fileID: 2577464034029894481, guid: e123566542e1abc4796f529b071da74f, type: 3}
       propertyPath: _arraySpriteRenderers.Array.data[2]
       value: 
@@ -43131,6 +43131,11 @@ PrefabInstance:
 --- !u!4 &1490909601 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5473509253875052212, guid: e2a801feabc8fe14b92f5440197e97ec, type: 3}
+  m_PrefabInstance: {fileID: 1490909600}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &1490909602 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 551513022314520549, guid: e2a801feabc8fe14b92f5440197e97ec, type: 3}
   m_PrefabInstance: {fileID: 1490909600}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1491723559
@@ -48730,7 +48735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6560893565370788278, guid: 6ceef434b0534c441af4945495dd3e8a, type: 3}
       propertyPath: _arraySpriteRenderers.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6560893565370788278, guid: 6ceef434b0534c441af4945495dd3e8a, type: 3}
       propertyPath: _arraySpriteRenderers.Array.data[1]
@@ -48739,7 +48744,7 @@ PrefabInstance:
     - target: {fileID: 6560893565370788278, guid: 6ceef434b0534c441af4945495dd3e8a, type: 3}
       propertyPath: _arraySpriteRenderers.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 146896566}
     - target: {fileID: 6560893565370788278, guid: 6ceef434b0534c441af4945495dd3e8a, type: 3}
       propertyPath: _arraySpriteRenderers.Array.data[3]
       value: 

@@ -46,6 +46,25 @@ public class ResourcesDeposit : MonoBehaviour
 
     public void SetSpriteAfterExtraction()
     {
+        if (_arraySpriteRenderers == null)
+        {
+            Debug.LogError($"ResourcesDeposit: SetSpriteAfterExtraction: _arraySpriteRenderers " +
+                $"is null, transform.name={transform.name}");
+            return;
+        }
+        if (_currentIndexOfSprite >= _arraySpriteRenderers.Length)
+        {
+            Debug.LogError($"ResourcesDeposit: SetSpriteAfterExtraction: _currentIndexOfSprite " +
+                $"is out of range, index={_currentIndexOfSprite}, transform.name={transform.name}");
+            return;
+        }
+        if (_arraySpriteRenderers[_currentIndexOfSprite] == null)
+        {
+            Debug.LogError($"ResourcesDeposit: SetSpriteAfterExtraction: _arraySpriteRenderers[" +
+                $"{_currentIndexOfSprite}] is null, transform.name={transform.name}");
+            return;
+        }
+
         _arraySpriteRenderers[_currentIndexOfSprite].sprite = _spriteAfterExtraction;
         if (!_arraySpriteRenderers[_currentIndexOfSprite].gameObject.activeSelf)
         {
