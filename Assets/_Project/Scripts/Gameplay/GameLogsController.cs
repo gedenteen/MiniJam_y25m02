@@ -24,6 +24,8 @@ public class GameLogsController : MonoBehaviour
     [SerializeField] private float _heightFor1RowOfText = 21f;
     [SerializeField] private int _symbolsInOneLine = 40;
 
+    private bool _isLogAboutBatteriesWasDisplayed = false;
+
     private void Awake()
     {
         _gameStopwatch.CountOfDays.Subscribe(newValue =>
@@ -34,6 +36,20 @@ public class GameLogsController : MonoBehaviour
                 gameLog.TextMesh.text = $"It has been {newValue} days since landing on planet 6r33n-2659.";
                 SetAdaptiveHeightOfRectTransform(gameLog);
                 ScrollToBottom().Forget();
+            }
+        }).AddTo(this);
+
+        _resourcesManager.Energy.Subscribe(newValue =>
+        {
+            if (!_isLogAboutBatteriesWasDisplayed && newValue >= _gameplayConfig.EnergyFor1Battery) 
+            {
+                GameLog gameLog = Instantiate(_prefabGameLog, _holderForLogs.transform);
+                gameLog.TextMesh.text = $"Yay, I’ve charged one battery! Only " +
+                    $"{_gameplayConfig.CountOfBatteries - 1} more to go.";
+                SetAdaptiveHeightOfRectTransform(gameLog);
+                ScrollToBottom().Forget();
+
+                _isLogAboutBatteriesWasDisplayed = true;
             }
         }).AddTo(this);
 

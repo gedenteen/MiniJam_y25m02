@@ -7,19 +7,22 @@ using UniRx;
 
 public class EnergyDisplayer : MonoBehaviour
 {
-    [Header("References to my objects")]
+    [Header("References to my objects: left part")]
     [SerializeField] private TextMeshProUGUI _textMeshEnergy;
     [SerializeField] private Image _imageEnergySticks;
     [SerializeField] private RectTransform _rectTransformEnergySticks;
+    [SerializeField] private GameObject _partWithBatteryInfo;
+    [SerializeField] private Transform _leftTransofrmForPartWithBatteryInfo;
+
+    [Header("References to my objects: right part")]
+    [SerializeField] private GameObject _partWithBatteries;
+    [SerializeField] private TextMeshProUGUI _textMeshBatteriesCharged;
 
     [Header("References to other objects")]
     [SerializeField] private ResourcesManager _resourcesManager;
 
     [Header("References to assets")]
     [SerializeField] private GameplayConfig _gameplayConfig;
-
-    [Header("Parameters")]
-    [SerializeField] private int _maxEnergyOfBattery = 100;
 
     private float _maxWidthOfImageEnergySticks = 0f;
 
@@ -31,14 +34,30 @@ public class EnergyDisplayer : MonoBehaviour
 
         _resourcesManager.Energy.Subscribe(newValue =>
         {
-            _textMeshEnergy.text = $"Energy {newValue}/{_gameplayConfig.EnergyFor1Battery}";
+            int energyForCurrentBattery = newValue % _gameplayConfig.EnergyFor1Battery;
+            int countOfChargedBatteries = newValue / _gameplayConfig.EnergyFor1Battery;
+
+            _textMeshEnergy.text =
+                $"Energy {energyForCurrentBattery}/{_gameplayConfig.EnergyFor1Battery}";
 
             float newWidthForImage = Mathf.Lerp(0f, _maxWidthOfImageEnergySticks, 
-                (float)newValue / _maxEnergyOfBattery);
+                (float)energyForCurrentBattery / _gameplayConfig.EnergyFor1Battery);
 
             _rectTransformEnergySticks.sizeDelta = new Vector2(
                 newWidthForImage,
                 _rectTransformEnergySticks.sizeDelta.y);
+
+            if (countOfChargedBatteries > 0)
+            {
+                if (!_partWithBatteries.activeSelf)
+                {
+                    _partWithBatteries.SetActive(true);
+                    _partWithBatteryInfo.transform.position = _leftTransofrmForPartWithBatteryInfo.position;
+                }
+
+                _textMeshBatteriesCharged.text = 
+                    $"{countOfChargedBatteries}/{_gameplayConfig.CountOfBatteries}";
+            }
         }).AddTo(this);
     }
 }

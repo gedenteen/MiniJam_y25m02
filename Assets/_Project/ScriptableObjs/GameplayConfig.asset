@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc777e1fd343dc443b2208cd32a432bf, type: 3}
   m_Name: GameplayConfig
   m_EditorClassIdentifier: 
-  _energyFor1Battery: 100
+  _energyFor1Battery: 10
   _countOfBatteries: 10
+  _countOfEnergyFrom1SolarPanel: 1
   _amountOfWoodToBurn: 5
   _amountOfEnergyAfterBurningWood: 4
   _amountOfCoalToBurn: 5
   _amountOfEnergyAfterBurningCoal: 25
   _amountOfSiliconForCreateRobot: 1
   _amountOfMetalsForCreateRobot: 3
+  _amountOfSiliconForCreateSolarPanel: 5
+  _amountOfMetalsForCreateSolarPanel: 2
   _durationOf1GameDayInMilliseconds: 1000
