@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc777e1fd343dc443b2208cd32a432bf, type: 3}
   m_Name: GameplayConfig
   m_EditorClassIdentifier: 
-  _energyFor1Battery: 10
-  _countOfBatteries: 3
+  _energyFor1Battery: 100
+  _countOfBatteries: 5
   _countOfEnergyFrom1SolarPanel: 1
   _amountOfWoodToBurn: 5
   _amountOfEnergyAfterBurningWood: 4
