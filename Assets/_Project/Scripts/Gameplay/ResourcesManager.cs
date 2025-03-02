@@ -22,10 +22,10 @@ public class ResourcesManager : MonoBehaviour
 
     [Header("References to other objects")]
     [SerializeField] private RobotsManager _robotsManager;
-    [SerializeField] private ConfigInvestigations _configOfInvestigations;
 
-    [SerializeField] private float _minTimeForInvestigate = 1f;
-    [SerializeField] private float _maxTimeForInvestigate = 3f;
+    [Header("References to assets")]
+    [SerializeField] private ConfigInvestigations _configOfInvestigations;
+    [SerializeField] private GameplayConfig _gameplayConfig;
 
     private Dictionary<ExtractableResourceId, Vector2> _dictChancesOfInvestigations;
     private Dictionary<ExtractableResourceId, PropertiesOfExtractableResource> 
@@ -132,6 +132,9 @@ public class ResourcesManager : MonoBehaviour
 
     public async UniTask ConvertResourceToEnergy(ExtractableResourceId resourceId)
     {
+        int amountOfResourceToBurn = 0;
+        int amountOfEnergyAfterBurn = 0;
+
         switch (resourceId)
         {
             case ExtractableResourceId.Undefined:
@@ -139,17 +142,29 @@ public class ResourcesManager : MonoBehaviour
                 Debug.LogError($"ResourcesManager: ConvertResourceToEnergy: can't convert " +
                     $"{resourceId} into energy");
                 return;
+            case ExtractableResourceId.Wood:
+                amountOfResourceToBurn = _gameplayConfig.AmountOfWoodToBurn;
+                amountOfEnergyAfterBurn = _gameplayConfig.AmountOfEnergyAfterBurningWood;
+                break;
+            case ExtractableResourceId.Coal:
+                amountOfResourceToBurn = _gameplayConfig.AmountOfCoalToBurn;
+                amountOfEnergyAfterBurn = _gameplayConfig.AmountOfEnergyAfterBurningCoal;
+                break;
+            default:
+                Debug.LogError($"ResourcesManager: ConvertResourceToEnergy: unexpected " +
+                    $"resourceId={resourceId}");
+                return;
         }
 
-        if (_dictExtractableResources[resourceId].AvailableResources.Value <= 0)
+        if (_dictExtractableResources[resourceId].AvailableResources.Value < amountOfResourceToBurn)
         {
             Debug.LogError($"ResourcesManager: ExtractResource: there is no available " +
                 $"resources of {resourceId}");
             return;
         }
 
-        _dictExtractableResources[resourceId].AvailableResources.Value--;
+        _dictExtractableResources[resourceId].AvailableResources.Value -= amountOfResourceToBurn;
         await UniTask.WaitForSeconds(3f);
-        Energy.Value++;
+        Energy.Value += amountOfEnergyAfterBurn;
     }
 }

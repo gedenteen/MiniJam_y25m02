@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <ResourceId>k__BackingField: 3
-  <CountOfResourcesFor1Extraction>k__BackingField: 9
+  <CountOfResourcesFor1Extraction>k__BackingField: 1
   <InitialCountOfExtractions>k__BackingField: -999
   <CountOfAvailableExtractions>k__BackingField: -999
   _arraySpriteRenderers:

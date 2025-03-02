@@ -15,7 +15,8 @@ public class EnergyDisplayer : MonoBehaviour
     [Header("References to other objects")]
     [SerializeField] private ResourcesManager _resourcesManager;
 
-    // [Header("References to assets")]
+    [Header("References to assets")]
+    [SerializeField] private GameplayConfig _gameplayConfig;
 
     [Header("Parameters")]
     [SerializeField] private int _maxEnergyOfBattery = 100;
@@ -30,7 +31,7 @@ public class EnergyDisplayer : MonoBehaviour
 
         _resourcesManager.Energy.Subscribe(newValue =>
         {
-            _textMeshEnergy.text = $"Energy {newValue}/{_maxEnergyOfBattery}";
+            _textMeshEnergy.text = $"Energy {newValue}/{_gameplayConfig.EnergyFor1Battery}";
 
             float newWidthForImage = Mathf.Lerp(0f, _maxWidthOfImageEnergySticks, 
                 (float)newValue / _maxEnergyOfBattery);

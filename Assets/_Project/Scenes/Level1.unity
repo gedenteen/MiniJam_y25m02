@@ -318,8 +318,7 @@ MonoBehaviour:
     value: 0
   _robotsManager: {fileID: 830891540}
   _configOfInvestigations: {fileID: 11400000, guid: 97d69840dc6e18843a9fa828b6b29a8c, type: 2}
-  _minTimeForInvestigate: 1
-  _maxTimeForInvestigate: 3
+  _gameplayConfig: {fileID: 11400000, guid: d798e32cc50af3f44bc24bb09323fc51, type: 2}
 --- !u!4 &84515595
 Transform:
   m_ObjectHideFlags: 0
@@ -3778,6 +3777,7 @@ MonoBehaviour:
   _buttonBurnCoal: {fileID: 1849155867}
   _buttonGatherSilicon: {fileID: 316915891}
   _resourcesManager: {fileID: 84515594}
+  _gameplayConfig: {fileID: 11400000, guid: d798e32cc50af3f44bc24bb09323fc51, type: 2}
 --- !u!114 &885037460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3909,6 +3909,7 @@ MonoBehaviour:
   _holderForLogs: {fileID: 331386110}
   _resourcesManager: {fileID: 84515594}
   _prefabGameLog: {fileID: 8638241591830861454, guid: 69bdd8a25fa35f34f80258eb15873f7c, type: 3}
+  _gameplayConfig: {fileID: 11400000, guid: d798e32cc50af3f44bc24bb09323fc51, type: 2}
   _heightFor1RowOfText: 21
 --- !u!1001 &916519846
 PrefabInstance:
@@ -4634,7 +4635,7 @@ MonoBehaviour:
   _cellCoal: {fileID: 242425272}
   _cellAvailableSiliconDeposits: {fileID: 1330898807}
   _cellSilicon: {fileID: 512415846}
-  _animationDuration: 1
+  _animationDuration: 0.4
 --- !u!114 &1073789071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6327,6 +6328,7 @@ MonoBehaviour:
   _imageEnergySticks: {fileID: 431232001}
   _rectTransformEnergySticks: {fileID: 431232000}
   _resourcesManager: {fileID: 84515594}
+  _gameplayConfig: {fileID: 11400000, guid: d798e32cc50af3f44bc24bb09323fc51, type: 2}
   _maxEnergyOfBattery: 100
 --- !u!1001 &1469745926
 PrefabInstance:

@@ -14,6 +14,7 @@ public class GameLogsController : MonoBehaviour
 
     [Header("References to assets")]
     [SerializeField] private GameLog _prefabGameLog;
+    [SerializeField] private GameplayConfig _gameplayConfig;
 
     [Header("Parameters")]
     [SerializeField] private float _heightFor1RowOfText = 21f;
@@ -32,6 +33,20 @@ public class GameLogsController : MonoBehaviour
                     "and burn the wood to generate energy.";
             }
         }).AddTo(this);
+
+        _resourcesManager.PropertiesWood.ExtractedResources.Subscribe(newValue =>
+        {
+            if (newValue == 1) 
+            {
+                GameLog gameLog = Instantiate(_prefabGameLog, _holderForLogs.transform);
+                gameLog.RectTransform.sizeDelta = new Vector2(
+                    gameLog.RectTransform.sizeDelta.x, 
+                    _heightFor1RowOfText * 2);
+                gameLog.TextMesh.text = $"I collected wood. By burning every " +
+                    $"{_gameplayConfig.AmountOfWoodToBurn} units of wood, I will gain " +
+                    $"{_gameplayConfig.AmountOfEnergyAfterBurningWood} units of energy.";
+            }
+        }).AddTo(this);
         
         _resourcesManager.PropertiesCoal.DiscoveredDeposits.Subscribe(newValue =>
         {
@@ -43,6 +58,22 @@ public class GameLogsController : MonoBehaviour
                     _heightFor1RowOfText * 2);
                 gameLog.TextMesh.text = "The robot has discovered a coal deposit. Coal will " +
                     "provide more energy than wood.";
+            }
+        }).AddTo(this);
+
+        _resourcesManager.PropertiesCoal.ExtractedResources.Subscribe(newValue =>
+        {
+            if (newValue == 1) 
+            {
+                GameLog gameLog = Instantiate(_prefabGameLog, _holderForLogs.transform);
+                gameLog.RectTransform.sizeDelta = new Vector2(
+                    gameLog.RectTransform.sizeDelta.x, 
+                    _heightFor1RowOfText * 5);
+                gameLog.TextMesh.text = $"I collected coal. By burning every " +
+                    $"{_gameplayConfig.AmountOfCoalToBurn} units of wood, I will gain " +
+                    $"{_gameplayConfig.AmountOfEnergyAfterBurningCoal} units of energy. " +
+                    $"Burning coal is more efficient than burning wood, but on most planets, " +
+                    $"coal is rarer than trees.";
             }
         }).AddTo(this);
         

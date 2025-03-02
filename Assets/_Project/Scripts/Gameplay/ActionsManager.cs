@@ -18,6 +18,9 @@ public class ActionsManager : MonoBehaviour
     [Header("References to other objects")]
     [SerializeField] private ResourcesManager _resourcesManager;
 
+    [Header("References to assets")]
+    [SerializeField] private GameplayConfig _gameplayConfig;
+
     private void Awake()
     {
         // Send Robot To Investigate
@@ -37,7 +40,8 @@ public class ActionsManager : MonoBehaviour
             _resourcesManager.ConvertResourceToEnergy(ExtractableResourceId.Wood).Forget());
         SubscribeToAvailableResource(
             _resourcesManager.PropertiesWood.AvailableResources, 
-            _buttonBurnWood);
+            _buttonBurnWood,
+            _gameplayConfig.AmountOfWoodToBurn);
         Debug.Log($"ActionsManager: Manager: avaiable wood = " +
             $"{_resourcesManager.PropertiesWood.AvailableResources}");
 
@@ -53,7 +57,8 @@ public class ActionsManager : MonoBehaviour
             _resourcesManager.ConvertResourceToEnergy(ExtractableResourceId.Coal).Forget());
         SubscribeToAvailableResource(
             _resourcesManager.PropertiesCoal.AvailableResources, 
-            _buttonBurnCoal);
+            _buttonBurnCoal,
+            _gameplayConfig.AmountOfCoalToBurn);
 
         // Extract silicon
         _buttonGatherSilicon.Button.onClick.AddListener(() => 
@@ -80,7 +85,7 @@ public class ActionsManager : MonoBehaviour
     }
 
     private void SubscribeToAvailableResource(ReactiveProperty<int> resourceProperty,
-        ActionButton button)
+        ActionButton button, int minAmountOfResource)
     {
         int currentValue = resourceProperty.Value;
 
@@ -97,7 +102,7 @@ public class ActionsManager : MonoBehaviour
                 // Показываем кнопку
                 button.ActivateCanvasGroup(true);
             }
-            if (newValue <= 0) 
+            if (newValue < minAmountOfResource) 
             {
                 button.SetInteractable(false);
             }
