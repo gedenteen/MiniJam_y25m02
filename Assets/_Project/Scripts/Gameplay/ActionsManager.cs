@@ -16,6 +16,7 @@ public class ActionsManager : MonoBehaviour
     [SerializeField] private ActionButton _buttonGatherSilicon;
     [SerializeField] private ActionButton _buttonGatherMetals;
     [SerializeField] private ActionButton _buttonCreateRobot;
+    [SerializeField] private ActionButton _buttonCreateSolarPanel;
 
     [Header("References to other objects")]
     [SerializeField] private ResourcesManager _resourcesManager;
@@ -85,6 +86,17 @@ public class ActionsManager : MonoBehaviour
             _gameplayConfig.AmountOfSiliconForCreateRobot,
             _gameplayConfig.AmountOfMetalsForCreateRobot,
             _buttonCreateRobot
+        );
+
+        // Create solar panel
+        _buttonCreateSolarPanel.Button.onClick.AddListener(() => 
+            _resourcesManager.CreateSolarPanel().Forget());
+        SubscribeTo2Resources(
+            _resourcesManager.PropertiesSilicon.AvailableResources,
+            _resourcesManager.PropertiesMetals.AvailableResources,
+            _gameplayConfig.AmountOfSiliconForCreateSolarPanel,
+            _gameplayConfig.AmountOfMetalsForCreateSolarPanel,
+            _buttonCreateSolarPanel
         );
     }
 

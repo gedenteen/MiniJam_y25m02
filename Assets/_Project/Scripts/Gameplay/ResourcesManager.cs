@@ -13,6 +13,7 @@ public class ResourcesManager : MonoBehaviour
     public ReactiveProperty<int> TotalCountOfRobots = new ReactiveProperty<int>(5);
     public ReactiveProperty<int> CountOfAvailableRobots = new ReactiveProperty<int>(5);
     public ReactiveProperty<int> CountOfCreatedRobots = new ReactiveProperty<int>(0);
+    public ReactiveProperty<int> CountOfSolarPanels = new ReactiveProperty<int>(0);
     public ReactiveProperty<int> HarmToNature = new ReactiveProperty<int>(0);
 
     [Header("Resources: extractable")]
@@ -162,5 +163,23 @@ public class ResourcesManager : MonoBehaviour
         TotalCountOfRobots.Value++;
         CountOfAvailableRobots.Value++;
         CountOfCreatedRobots.Value++;
+    }
+
+    public async UniTask CreateSolarPanel()
+    {
+        if (PropertiesSilicon.AvailableResources.Value < _gameplayConfig.AmountOfSiliconForCreateSolarPanel
+            ||
+            PropertiesMetals.AvailableResources.Value < _gameplayConfig.AmountOfMetalsForCreateSolarPanel)
+        {
+            Debug.LogError($"ResourcesManager: CreateSolarPanel: don't have enough resources for it");
+            return;
+        }
+
+        PropertiesSilicon.AvailableResources.Value -= _gameplayConfig.AmountOfSiliconForCreateSolarPanel;
+        PropertiesMetals.AvailableResources.Value -= _gameplayConfig.AmountOfMetalsForCreateSolarPanel;
+
+        await UniTask.WaitForSeconds(1f);
+        
+        CountOfSolarPanels.Value++;
     }
 }
