@@ -44,7 +44,7 @@ public class ResourcesManager : MonoBehaviour
         _dictExtractableResources[ExtractableResourceId.Wood] = PropertiesWood;
         _dictExtractableResources[ExtractableResourceId.Coal] = PropertiesCoal;
         _dictExtractableResources[ExtractableResourceId.Silicon] = PropertiesSilicon;
-        _dictExtractableResources[ExtractableResourceId.Metals] = PropertiesSilicon;
+        _dictExtractableResources[ExtractableResourceId.Metals] = PropertiesMetals;
     }
 
     [Button]

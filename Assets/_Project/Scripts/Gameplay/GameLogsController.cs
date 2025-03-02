@@ -41,7 +41,7 @@ public class GameLogsController : MonoBehaviour
                 GameLog gameLog = Instantiate(_prefabGameLog, _holderForLogs.transform);
                 gameLog.RectTransform.sizeDelta = new Vector2(
                     gameLog.RectTransform.sizeDelta.x, 
-                    _heightFor1RowOfText * 2);
+                    _heightFor1RowOfText * 3);
                 gameLog.TextMesh.text = $"I collected wood. By burning every " +
                     $"{_gameplayConfig.AmountOfWoodToBurn} units of wood, I will gain " +
                     $"{_gameplayConfig.AmountOfEnergyAfterBurningWood} units of energy.";
