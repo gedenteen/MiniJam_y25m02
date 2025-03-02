@@ -61,7 +61,7 @@ MonoBehaviour:
   - {fileID: 8012352916844999450}
   - {fileID: 5968772082391211102}
   - {fileID: 3992250316793428411}
-  _spriteAfterExtraction: {fileID: 21300000, guid: 034a13ac876f16f47b248429aa643f9d, type: 3}
+  _spriteAfterExtraction: {fileID: 21300000, guid: fa7df9d100dbe934a9129836beb0cc11, type: 3}
 --- !u!1001 &369985719660054048
 PrefabInstance:
   m_ObjectHideFlags: 0
