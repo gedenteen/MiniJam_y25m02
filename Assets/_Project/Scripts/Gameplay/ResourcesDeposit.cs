@@ -28,7 +28,7 @@ public class ResourcesDeposit : MonoBehaviour
     [Button] // Call it in Editor
     public void GetAllChildSpriteRenderers()
     {
-        _arraySpriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        _arraySpriteRenderers = this.transform.GetComponentsInChildren<SpriteRenderer>();
         Debug.Log($"ResourcesDeposit: GetAllChildSpriteRenderers: end");
     }
 
