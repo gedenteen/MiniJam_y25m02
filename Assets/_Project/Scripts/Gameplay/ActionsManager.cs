@@ -12,6 +12,8 @@ public class ActionsManager : MonoBehaviour
     [SerializeField] private ActionButton _buttonGatherWood;
     [SerializeField] private ActionButton _buttonBurnWood;
     [SerializeField] private ActionButton _buttonGatherCoal;
+    [SerializeField] private ActionButton _buttonBurnCoal;
+    [SerializeField] private ActionButton _buttonGatherSilicon;
 
     [Header("References to other objects")]
     [SerializeField] private ResourcesManager _resourcesManager;
@@ -45,6 +47,20 @@ public class ActionsManager : MonoBehaviour
         SubscribeToAvailableDeposits(
             _resourcesManager.PropertiesCoal.AvailableDeposits,
             _buttonGatherCoal);
+
+        // Burn coal
+        _buttonBurnCoal.Button.onClick.AddListener(() =>
+            _resourcesManager.ConvertResourceToEnergy(ExtractableResourceId.Coal).Forget());
+        SubscribeToAvailableResource(
+            _resourcesManager.PropertiesCoal.AvailableResources, 
+            _buttonBurnCoal);
+
+        // Extract silicon
+        _buttonGatherSilicon.Button.onClick.AddListener(() => 
+            _resourcesManager.ExtractResource(ExtractableResourceId.Silicon).Forget());
+        SubscribeToAvailableDeposits(
+            _resourcesManager.PropertiesSilicon.AvailableDeposits,
+            _buttonGatherSilicon);
 
     }
 

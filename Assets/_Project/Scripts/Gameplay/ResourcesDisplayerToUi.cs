@@ -15,6 +15,8 @@ public class ResourcesDisplayerToUi : MonoBehaviour
     [SerializeField] private ResourceCellOnUi _cellWood;
     [SerializeField] private ResourceCellOnUi _cellAvailableCoalDeposits;
     [SerializeField] private ResourceCellOnUi _cellCoal;
+    [SerializeField] private ResourceCellOnUi _cellAvailableSiliconDeposits;
+    [SerializeField] private ResourceCellOnUi _cellSilicon;
 
     [Header("")]
     [SerializeField] private float _animationDuration = 1f;
@@ -27,6 +29,8 @@ public class ResourcesDisplayerToUi : MonoBehaviour
         AnimateValue(_resourceManager.PropertiesWood.AvailableResources, _cellWood);
         AnimateValue(_resourceManager.PropertiesCoal.AvailableDeposits, _cellAvailableCoalDeposits);
         AnimateValue(_resourceManager.PropertiesCoal.AvailableResources, _cellCoal);
+        AnimateValue(_resourceManager.PropertiesSilicon.AvailableDeposits, _cellAvailableSiliconDeposits);
+        AnimateValue(_resourceManager.PropertiesSilicon.AvailableResources, _cellSilicon);
     }
 
     private void AnimateValue(ReactiveProperty<int> property, ResourceCellOnUi cell)
