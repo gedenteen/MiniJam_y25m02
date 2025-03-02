@@ -125,12 +125,13 @@ public class GameLogsController : MonoBehaviour
             if (newValue == 1) 
             {
                 GameLog gameLog = Instantiate(_prefabGameLog, _holderForLogs.transform);
-                gameLog.RectTransform.sizeDelta = new Vector2(
-                    gameLog.RectTransform.sizeDelta.x, 
-                    _heightFor1RowOfText * 4);
-                gameLog.TextMesh.text = "Now I have various metals. To create a robot, I will " +
-                    $"need {_gameplayConfig.AmountOfSiliconForCreateRobot} unit of silicon and " +
-                    $"{_gameplayConfig.AmountOfMetalsForCreateRobot} units of metals.";
+                gameLog.TextMesh.text = "Now I have various metals. To create a robot, I " +
+                    $"need {_gameplayConfig.AmountOfSiliconForCreateRobot} units of silicon and " +
+                    $"{_gameplayConfig.AmountOfMetalsForCreateRobot} units of metals. To create " + 
+                    $"a solar panel, I need {_gameplayConfig.AmountOfSiliconForCreateSolarPanel} " +
+                    $"units of silicon and {_gameplayConfig.AmountOfMetalsForCreateSolarPanel} " +
+                    $"units of metals";
+                SetAdaptiveHeightOfRectTransform(gameLog);
                 ScrollToBottom().Forget();
             }
         }).AddTo(this);
@@ -146,6 +147,19 @@ public class GameLogsController : MonoBehaviour
                 gameLog.TextMesh.text = "I have created an additional robot. The more robots " +
                     "there are, the faster the terrain will be explored and resources " +
                     "will be gathered.";
+                ScrollToBottom().Forget();
+            }
+        }).AddTo(this);
+        
+        _resourcesManager.CountOfSolarPanels.Subscribe(newValue =>
+        {
+            if (newValue == 1) 
+            {
+                GameLog gameLog = Instantiate(_prefabGameLog, _holderForLogs.transform);
+                gameLog.TextMesh.text = "Great! I have built a solar panel. Each solar panel " +
+                    $"will generate {_gameplayConfig.CountOfEnergyFrom1SolarPanel} units of " +
+                    $"energy per day. Additionally, solar panels do not harm the environment.";
+                SetAdaptiveHeightOfRectTransform(gameLog);
                 ScrollToBottom().Forget();
             }
         }).AddTo(this);

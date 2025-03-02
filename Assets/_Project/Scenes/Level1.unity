@@ -5811,7 +5811,7 @@ MonoBehaviour:
   _prefabGameLog: {fileID: 8638241591830861454, guid: 69bdd8a25fa35f34f80258eb15873f7c, type: 3}
   _gameplayConfig: {fileID: 11400000, guid: d798e32cc50af3f44bc24bb09323fc51, type: 2}
   _heightFor1RowOfText: 21
-  _symbolsInOneLine: 36
+  _symbolsInOneLine: 44
 --- !u!1001 &916519846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12215,6 +12215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _resourcesManager: {fileID: 84515594}
   _gameStopwatch: {fileID: 84515596}
+  _gameplayConfig: {fileID: 11400000, guid: d798e32cc50af3f44bc24bb09323fc51, type: 2}
 --- !u!4 &1962173127
 Transform:
   m_ObjectHideFlags: 0

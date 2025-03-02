@@ -8,6 +8,7 @@ public class GameplayConfig : ScriptableObject
     [Header("Energy")]
     [SerializeField] private int _energyFor1Battery = 100;
     [SerializeField] private int _countOfBatteries = 10;
+    [SerializeField] private int _countOfEnergyFrom1SolarPanel = 1;
 
     [Header("Converting")]
     [SerializeField] private int _amountOfWoodToBurn = 5;
@@ -27,6 +28,7 @@ public class GameplayConfig : ScriptableObject
     // Energy
     public int EnergyFor1Battery => _energyFor1Battery;
     public int CountOfBatteries => _countOfBatteries;
+    public int CountOfEnergyFrom1SolarPanel => _countOfEnergyFrom1SolarPanel;
 
     // Converting
     public int AmountOfWoodToBurn => _amountOfWoodToBurn;
