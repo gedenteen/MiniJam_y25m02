@@ -371,6 +371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 84515595}
   - component: {fileID: 84515594}
+  - component: {fileID: 84515596}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -398,8 +399,6 @@ MonoBehaviour:
     value: 55
   CountOfCreatedRobots:
     value: 0
-  CountOfDays:
-    value: 0
   HarmToNature:
     value: 0
   _robotsManager: {fileID: 830891540}
@@ -420,6 +419,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &84515596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84515593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd6134c1b1a1124ca06b0c9ca26ff59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CountOfDays:
+    value: 0
+  _gameplayConfig: {fileID: 11400000, guid: d798e32cc50af3f44bc24bb09323fc51, type: 2}
 --- !u!1001 &87305118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5789,6 +5803,7 @@ MonoBehaviour:
   _holderForLogs: {fileID: 331386110}
   _scrollRect: {fileID: 1098421647}
   _resourcesManager: {fileID: 84515594}
+  _gameStopwatch: {fileID: 84515596}
   _prefabGameLog: {fileID: 8638241591830861454, guid: 69bdd8a25fa35f34f80258eb15873f7c, type: 3}
   _gameplayConfig: {fileID: 11400000, guid: d798e32cc50af3f44bc24bb09323fc51, type: 2}
   _heightFor1RowOfText: 21

@@ -14,6 +14,7 @@ public class GameLogsController : MonoBehaviour
 
     [Header("References to other objects")]
     [SerializeField] private ResourcesManager _resourcesManager;
+    [SerializeField] private GameStopwatch _gameStopwatch;
 
     [Header("References to assets")]
     [SerializeField] private GameLog _prefabGameLog;
@@ -25,6 +26,17 @@ public class GameLogsController : MonoBehaviour
 
     private void Awake()
     {
+        _gameStopwatch.CountOfDays.Subscribe(newValue =>
+        {
+            if (newValue != 0 && newValue % 30 == 0) 
+            {
+                GameLog gameLog = Instantiate(_prefabGameLog, _holderForLogs.transform);
+                gameLog.TextMesh.text = $"It has been {newValue} days since landing on planet 6r33n-2659.";
+                SetAdaptiveHeightOfRectTransform(gameLog);
+                ScrollToBottom().Forget();
+            }
+        }).AddTo(this);
+
         _resourcesManager.PropertiesWood.DiscoveredDeposits.Subscribe(newValue =>
         {
             if (newValue == 1) 

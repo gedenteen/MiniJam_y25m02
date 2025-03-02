@@ -19,6 +19,9 @@ public class GameplayConfig : ScriptableObject
     [SerializeField] private int _amountOfSiliconForCreateRobot = 1;
     [SerializeField] private int _amountOfMetalsForCreateRobot = 3;
 
+    [Header("Timings")]
+    [SerializeField] private int _durationOf1GameDayInMilliseconds = 3000; 
+
     public int EnergyFor1Battery => _energyFor1Battery;
     public int CountOfBatteries => _countOfBatteries;
 
@@ -29,4 +32,6 @@ public class GameplayConfig : ScriptableObject
 
     public int AmountOfSiliconForCreateRobot => _amountOfSiliconForCreateRobot;
     public int AmountOfMetalsForCreateRobot => _amountOfMetalsForCreateRobot;
+
+    public int DurationOf1GameDayInMilliseconds => _durationOf1GameDayInMilliseconds;
 }

@@ -13,7 +13,6 @@ public class ResourcesManager : MonoBehaviour
     public ReactiveProperty<int> TotalCountOfRobots = new ReactiveProperty<int>(5);
     public ReactiveProperty<int> CountOfAvailableRobots = new ReactiveProperty<int>(5);
     public ReactiveProperty<int> CountOfCreatedRobots = new ReactiveProperty<int>(0);
-    public ReactiveProperty<int> CountOfDays = new ReactiveProperty<int>(0);
     public ReactiveProperty<int> HarmToNature = new ReactiveProperty<int>(0);
 
     [Header("Resources: extractable")]
