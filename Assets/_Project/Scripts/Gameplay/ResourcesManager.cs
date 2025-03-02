@@ -57,7 +57,7 @@ public class ResourcesManager : MonoBehaviour
             return;
         }
         CountOfAvailableRobots.Value--;
-        Debug.Log("ResourcesManager: SendRobotToInvestigate: Robot sent to investigate");
+        // Debug.Log("ResourcesManager: SendRobotToInvestigate: Robot sent to investigate");
         
         // Дальше идёт асинхронная логика
         ExtractableResourceId resourceId = await _robotsManager.SendRobotToResourcesDeposit();
@@ -74,7 +74,7 @@ public class ResourcesManager : MonoBehaviour
         }
 
         CountOfAvailableRobots.Value++;
-        Debug.Log("ResourcesManager: SendRobotToInvestigate: Robot returned from investigation");
+        // Debug.Log("ResourcesManager: SendRobotToInvestigate: Robot returned from investigation");
     }
 
     public async UniTask ExtractResource(ExtractableResourceId resourceId)
