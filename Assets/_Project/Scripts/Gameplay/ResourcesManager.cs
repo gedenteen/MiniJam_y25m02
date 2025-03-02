@@ -12,6 +12,7 @@ public class ResourcesManager : MonoBehaviour
     public ReactiveProperty<int> Energy = new ReactiveProperty<int>(0);
     public ReactiveProperty<int> TotalCountOfRobots = new ReactiveProperty<int>(5);
     public ReactiveProperty<int> CountOfAvailableRobots = new ReactiveProperty<int>(5);
+    public ReactiveProperty<int> CountOfCreatedRobots = new ReactiveProperty<int>(0);
     public ReactiveProperty<int> CountOfDays = new ReactiveProperty<int>(0);
     public ReactiveProperty<int> HarmToNature = new ReactiveProperty<int>(0);
 
@@ -114,6 +115,7 @@ public class ResourcesManager : MonoBehaviour
         {
             case ExtractableResourceId.Undefined:
             case ExtractableResourceId.Silicon:
+            case ExtractableResourceId.Metals:
                 Debug.LogError($"ResourcesManager: ConvertResourceToEnergy: can't convert " +
                     $"{resourceId} into energy");
                 return;
@@ -141,5 +143,25 @@ public class ResourcesManager : MonoBehaviour
         _dictExtractableResources[resourceId].AvailableResources.Value -= amountOfResourceToBurn;
         await UniTask.WaitForSeconds(3f);
         Energy.Value += amountOfEnergyAfterBurn;
+    }
+
+    public async UniTask CreateRobot()
+    {
+        if (PropertiesSilicon.AvailableResources.Value < _gameplayConfig.AmountOfSiliconForCreateRobot
+            ||
+            PropertiesMetals.AvailableResources.Value < _gameplayConfig.AmountOfMetalsForCreateRobot)
+        {
+            Debug.LogError($"ResourcesManager: CreateRobot: don't have enough resources for it");
+            return;
+        }
+
+        PropertiesSilicon.AvailableResources.Value -= _gameplayConfig.AmountOfSiliconForCreateRobot;
+        PropertiesMetals.AvailableResources.Value -= _gameplayConfig.AmountOfMetalsForCreateRobot;
+
+        await UniTask.WaitForSeconds(1f);
+        
+        TotalCountOfRobots.Value++;
+        CountOfAvailableRobots.Value++;
+        CountOfCreatedRobots.Value++;
     }
 }

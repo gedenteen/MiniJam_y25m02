@@ -15,6 +15,7 @@ public class ActionsManager : MonoBehaviour
     [SerializeField] private ActionButton _buttonBurnCoal;
     [SerializeField] private ActionButton _buttonGatherSilicon;
     [SerializeField] private ActionButton _buttonGatherMetals;
+    [SerializeField] private ActionButton _buttonCreateRobot;
 
     [Header("References to other objects")]
     [SerializeField] private ResourcesManager _resourcesManager;
@@ -75,6 +76,16 @@ public class ActionsManager : MonoBehaviour
             _resourcesManager.PropertiesMetals.AvailableDeposits,
             _buttonGatherMetals);
 
+        // Create robot
+        _buttonCreateRobot.Button.onClick.AddListener(() => 
+            _resourcesManager.CreateRobot().Forget());
+        SubscribeTo2Resources(
+            _resourcesManager.PropertiesSilicon.AvailableResources,
+            _resourcesManager.PropertiesMetals.AvailableResources,
+            _gameplayConfig.AmountOfSiliconForCreateRobot,
+            _gameplayConfig.AmountOfMetalsForCreateRobot,
+            _buttonCreateRobot
+        );
     }
 
     private void SubscribeToAvailableRobots(ActionButton button)
@@ -165,6 +176,58 @@ public class ActionsManager : MonoBehaviour
                     // И кол-во доступных роботов > 0
                     button.SetInteractable(true);
                 }
+            }
+        }).AddTo(this);
+    }
+
+    private void SubscribeTo2Resources(
+        ReactiveProperty<int> resourceProperty1, 
+        ReactiveProperty<int> resourceProperty2,
+        int minAmountOfResource1,
+        int minAmountOfResource2,
+        ActionButton button)
+    {
+        button.ActivateCanvasGroup(false);
+
+        resourceProperty1.Subscribe(newValueOfResource1 =>
+        {
+            // Проверка на активицию кнопки
+            if (!button.CanvasGroup.interactable &&
+                newValueOfResource1 > 0 && resourceProperty2.Value > 0) 
+            {
+                // Показываем кнопку
+                button.ActivateCanvasGroup(true);
+            }
+
+            // Проверка на включение/выключение интерактивности кнопки
+            if (newValueOfResource1 < minAmountOfResource1) 
+            {
+                button.SetInteractable(false);
+            }
+            else if (resourceProperty2.Value >= minAmountOfResource2)
+            {
+                button.SetInteractable(true);
+            }
+        }).AddTo(this);
+
+        resourceProperty2.Subscribe(newValueOfResource2 =>
+        {
+            // Проверка на активицию кнопки
+            if (!button.CanvasGroup.interactable &&
+                newValueOfResource2 > 0 && resourceProperty1.Value > 0) 
+            {
+                // Показываем кнопку
+                button.ActivateCanvasGroup(true);
+            }
+
+            // Проверка на включение/выключение интерактивности кнопки
+            if (newValueOfResource2 < minAmountOfResource2) 
+            {
+                button.SetInteractable(false);
+            }
+            else if (resourceProperty1.Value >= minAmountOfResource1)
+            {
+                button.SetInteractable(true);
             }
         }).AddTo(this);
     }

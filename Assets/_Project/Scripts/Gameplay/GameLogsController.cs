@@ -90,5 +90,32 @@ public class GameLogsController : MonoBehaviour
                     "solar panels.";
             }
         }).AddTo(this);
+        
+        _resourcesManager.PropertiesMetals.DiscoveredDeposits.Subscribe(newValue =>
+        {
+            if (newValue == 1) 
+            {
+                GameLog gameLog = Instantiate(_prefabGameLog, _holderForLogs.transform);
+                gameLog.RectTransform.sizeDelta = new Vector2(
+                    gameLog.RectTransform.sizeDelta.x, 
+                    _heightFor1RowOfText * 2);
+                gameLog.TextMesh.text = "The robot has discovered a deposit of various metals. " +
+                    "Progress should speed up now.";
+            }
+        }).AddTo(this);
+        
+        _resourcesManager.CountOfCreatedRobots.Subscribe(newValue =>
+        {
+            if (newValue == 1) 
+            {
+                GameLog gameLog = Instantiate(_prefabGameLog, _holderForLogs.transform);
+                gameLog.RectTransform.sizeDelta = new Vector2(
+                    gameLog.RectTransform.sizeDelta.x, 
+                    _heightFor1RowOfText * 4);
+                gameLog.TextMesh.text = "I have created an additional robot. The more robots " +
+                    "there are, the faster the terrain will be explored and resources " +
+                    "will be gathered.";
+            }
+        }).AddTo(this);
     }
 }

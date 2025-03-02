@@ -15,6 +15,10 @@ public class GameplayConfig : ScriptableObject
     [SerializeField] private int _amountOfCoalToBurn = 5;
     [SerializeField] private int _amountOfEnergyAfterBurningCoal = 25;
 
+    [Header("Creating")]
+    [SerializeField] private int _amountOfSiliconForCreateRobot = 1;
+    [SerializeField] private int _amountOfMetalsForCreateRobot = 3;
+
     public int EnergyFor1Battery => _energyFor1Battery;
     public int CountOfBatteries => _countOfBatteries;
 
@@ -22,4 +26,7 @@ public class GameplayConfig : ScriptableObject
     public int AmountOfEnergyAfterBurningWood => _amountOfEnergyAfterBurningWood;
     public int AmountOfCoalToBurn => _amountOfCoalToBurn;
     public int AmountOfEnergyAfterBurningCoal => _amountOfEnergyAfterBurningCoal;
+
+    public int AmountOfSiliconForCreateRobot => _amountOfSiliconForCreateRobot;
+    public int AmountOfMetalsForCreateRobot => _amountOfMetalsForCreateRobot;
 }
