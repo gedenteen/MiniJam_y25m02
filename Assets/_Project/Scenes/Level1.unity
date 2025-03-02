@@ -396,6 +396,8 @@ MonoBehaviour:
     value: 55
   CountOfAvailableRobots:
     value: 55
+  CountOfCreatedRobots:
+    value: 0
   CountOfDays:
     value: 0
   HarmToNature:
@@ -5785,10 +5787,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _holderForLogs: {fileID: 331386110}
+  _scrollRect: {fileID: 1098421647}
   _resourcesManager: {fileID: 84515594}
   _prefabGameLog: {fileID: 8638241591830861454, guid: 69bdd8a25fa35f34f80258eb15873f7c, type: 3}
   _gameplayConfig: {fileID: 11400000, guid: d798e32cc50af3f44bc24bb09323fc51, type: 2}
   _heightFor1RowOfText: 21
+  _symbolsInOneLine: 36
 --- !u!1001 &916519846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7459,6 +7463,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1163685867520104917, guid: 459eb21127edffd40b8462996cafea7f, type: 3}
   m_PrefabInstance: {fileID: 1098421645}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1098421647 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7623522836764464401, guid: 459eb21127edffd40b8462996cafea7f, type: 3}
+  m_PrefabInstance: {fileID: 1098421645}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1098857903
 PrefabInstance:
   m_ObjectHideFlags: 0
