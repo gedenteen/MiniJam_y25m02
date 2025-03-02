@@ -4,4 +4,5 @@ public enum ExtractableResourceId
     Wood,
     Coal,
     Silicon,
+    Metals
 }

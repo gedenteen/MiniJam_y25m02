@@ -19,6 +19,7 @@ public class ResourcesManager : MonoBehaviour
     public PropertiesOfExtractableResource PropertiesWood = new PropertiesOfExtractableResource();
     public PropertiesOfExtractableResource PropertiesCoal = new PropertiesOfExtractableResource();
     public PropertiesOfExtractableResource PropertiesSilicon = new PropertiesOfExtractableResource();
+    public PropertiesOfExtractableResource PropertiesMetals = new PropertiesOfExtractableResource();
 
     [Header("References to other objects")]
     [SerializeField] private RobotsManager _robotsManager;
@@ -27,40 +28,13 @@ public class ResourcesManager : MonoBehaviour
     [SerializeField] private ConfigInvestigations _configOfInvestigations;
     [SerializeField] private GameplayConfig _gameplayConfig;
 
-    private Dictionary<ExtractableResourceId, Vector2> _dictChancesOfInvestigations;
+    // Private fields
     private Dictionary<ExtractableResourceId, PropertiesOfExtractableResource> 
         _dictExtractableResources;
 
     private void Awake()
     {
-        FillDictChancesOfInvestigations();
         FillDictExtractableResources();
-    }
-
-    private void FillDictChancesOfInvestigations()
-    {
-        // Fill _dictChancesOfInvestigations with values from SO ConfigInvestigations
-        _dictChancesOfInvestigations = new Dictionary<ExtractableResourceId, Vector2>();
-        _dictChancesOfInvestigations[ExtractableResourceId.Wood] = 
-            _configOfInvestigations.ChanceForForest;
-        _dictChancesOfInvestigations[ExtractableResourceId.Coal] = 
-            _configOfInvestigations.ChanceForCoal;
-        _dictChancesOfInvestigations[ExtractableResourceId.Silicon] = 
-            _configOfInvestigations.ChanceForSilicon;
-
-        float sumOfChances = 0f;
-        foreach (var pair in _dictChancesOfInvestigations)
-        {
-            Vector2 chanceRange = pair.Value;
-            sumOfChances += chanceRange.y - chanceRange.x;
-        }
-
-        //Debug.Log($"ResourcesManager: FillDictChancesOfInvestigations: sumOfChances={sumOfChances}");
-        if (sumOfChances < 0.999f || sumOfChances > 1.001f)
-        {
-            Debug.LogError($"ResourcesManager: FillDictChancesOfInvestigations: wrong sum of " +
-                $"chances = {sumOfChances} (should be 1.0)");
-        }
     }
 
     private void FillDictExtractableResources()
@@ -70,6 +44,7 @@ public class ResourcesManager : MonoBehaviour
         _dictExtractableResources[ExtractableResourceId.Wood] = PropertiesWood;
         _dictExtractableResources[ExtractableResourceId.Coal] = PropertiesCoal;
         _dictExtractableResources[ExtractableResourceId.Silicon] = PropertiesSilicon;
+        _dictExtractableResources[ExtractableResourceId.Metals] = PropertiesSilicon;
     }
 
     [Button]
